@@ -1,0 +1,2458 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Lernzusammenfassung Modul M320 - Objektorientiert Programmieren I mit C#">
+<style>
+  :root{ color-scheme: light dark; padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+  html{ -webkit-text-size-adjust:100%; }
+  body{ margin:0; }
+  img{ max-width:100%; }
+  [hidden]{ display:none !important; }
+</style>
+<title>M320 Prüfungstrainer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&display=swap">
+
+<style>
+:root{
+  --ground:#F4F4F7; --surface:#FFFFFF; --surface-2:#EDECF3;
+  --ink:#1A1823; --ink-2:#56536A; --ink-3:#7C798F;
+  --line:#DCDAE6; --line-2:#C7C4D6;
+  --accent:#5B2BD4; --accent-soft:#EDE7FD; --accent-line:#C9B8FA;
+  --warn:#9C4C09; --warn-soft:#FBEEDB; --warn-line:#E8C99B;
+  --ok:#0B6E5F; --ok-soft:#DDF0EB; --ok-line:#9BD4C9;
+  --code-bg:#F3F2F8; --code-ink:#26233A;
+  --kw:#7A2BC9; --str:#0B6E5F; --com:#8A879C; --num:#9C4C09;
+  --shadow:0 1px 2px rgba(26,24,35,.05), 0 8px 24px -16px rgba(26,24,35,.25);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#121118; --surface:#1B1A23; --surface-2:#252331;
+    --ink:#E9E7F2; --ink-2:#A6A3B8; --ink-3:#817E94;
+    --line:#302E3D; --line-2:#413E52;
+    --accent:#B49CFF; --accent-soft:#282140; --accent-line:#4A3D75;
+    --warn:#E3A469; --warn-soft:#332614; --warn-line:#5E4526;
+    --ok:#62D2BB; --ok-soft:#13322D; --ok-line:#2A5A51;
+    --code-bg:#16151D; --code-ink:#D9D6E8;
+    --kw:#C79BFF; --str:#68CFB6; --com:#6F6C82; --num:#E3A469;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -16px rgba(0,0,0,.8);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#121118; --surface:#1B1A23; --surface-2:#252331;
+  --ink:#E9E7F2; --ink-2:#A6A3B8; --ink-3:#817E94;
+  --line:#302E3D; --line-2:#413E52;
+  --accent:#B49CFF; --accent-soft:#282140; --accent-line:#4A3D75;
+  --warn:#E3A469; --warn-soft:#332614; --warn-line:#5E4526;
+  --ok:#62D2BB; --ok-soft:#13322D; --ok-line:#2A5A51;
+  --code-bg:#16151D; --code-ink:#D9D6E8;
+  --kw:#C79BFF; --str:#68CFB6; --com:#6F6C82; --num:#E3A469;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -16px rgba(0,0,0,.8);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--ground); color:var(--ink);
+  font-family:"IBM Plex Serif",Georgia,"Times New Roman",serif;
+  font-size:16.5px; line-height:1.62;
+  -webkit-text-size-adjust:100%;
+}
+h1,h2,h3,h4,.sans{font-family:"IBM Plex Sans",-apple-system,"Segoe UI",Helvetica,Arial,sans-serif}
+code,kbd,pre,.mono{font-family:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace}
+
+/* ---------- Layout ---------- */
+.shell{max-width:1180px; margin:0 auto; padding-inline:16px; padding-block:0}
+.grid{display:grid; grid-template-columns:230px minmax(0,1fr); gap:44px; align-items:start}
+@media (max-width:900px){ .grid{grid-template-columns:1fr; gap:0} }
+
+/* ---------- Header ---------- */
+.masthead{padding-block:40px 28px; border-bottom:1px solid var(--line)}
+.eyebrow{
+  font-family:"IBM Plex Mono",monospace; font-size:11.5px; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--accent); margin:0 0 10px
+}
+h1{
+  font-size:clamp(30px,5.4vw,46px); line-height:1.08; font-weight:700;
+  letter-spacing:-.022em; margin:0 0 12px; text-wrap:balance;
+}
+.lede{font-size:17.5px; color:var(--ink-2); max-width:62ch; margin:0}
+.meta-row{
+  display:flex; flex-wrap:wrap; gap:8px; margin-top:20px;
+  font-family:"IBM Plex Mono",monospace; font-size:12px;
+}
+.chip{
+  border:1px solid var(--line-2); border-radius:999px; padding:4px 11px;
+  color:var(--ink-2); background:var(--surface);
+}
+.chip.hot{border-color:var(--warn-line); background:var(--warn-soft); color:var(--warn)}
+
+/* ---------- Sidebar ---------- */
+nav.toc{
+  position:sticky; top:calc(env(safe-area-inset-top, 0px) + 16px);
+  padding-block:32px 24px;
+}
+@media (max-width:900px){
+  nav.toc{position:static; padding-block:24px 4px}
+}
+.toc h4{
+  font-size:11px; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--ink-3); margin:0 0 12px; font-weight:600;
+  font-family:"IBM Plex Mono",monospace;
+}
+.toc ol{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:1px}
+.toc a{
+  display:flex; gap:10px; align-items:baseline;
+  font-family:"IBM Plex Sans",sans-serif; font-size:13.5px; line-height:1.35;
+  color:var(--ink-2); text-decoration:none; padding:7px 10px;
+  border-radius:7px; border-left:2px solid transparent;
+}
+.toc a:hover{background:var(--surface-2); color:var(--ink)}
+.toc a.active{background:var(--accent-soft); color:var(--accent); border-left-color:var(--accent); font-weight:600}
+.toc a .n{font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--ink-3); flex:none}
+.toc a.active .n{color:var(--accent)}
+.progress-box{
+  margin-top:20px; padding:12px; border:1px solid var(--line); border-radius:10px;
+  background:var(--surface); font-family:"IBM Plex Sans",sans-serif; font-size:12.5px; color:var(--ink-2);
+}
+.bar{height:5px; border-radius:99px; background:var(--surface-2); overflow:hidden; margin-top:8px}
+.bar i{display:block; height:100%; background:var(--accent); width:0%; transition:width .25s ease}
+
+/* ---------- Sections ---------- */
+main{padding-block:28px 80px; min-width:0}
+section{scroll-margin-top:24px; padding-block:34px 4px; border-top:1px solid var(--line)}
+section:first-of-type{border-top:none}
+.sec-head{display:flex; gap:14px; align-items:baseline; margin-bottom:6px}
+.sec-num{
+  font-family:"IBM Plex Mono",monospace; font-size:12px; color:var(--accent);
+  border:1px solid var(--accent-line); background:var(--accent-soft);
+  border-radius:6px; padding:2px 7px; flex:none; font-weight:600;
+}
+h2{font-size:clamp(22px,3.4vw,29px); font-weight:700; letter-spacing:-.018em; margin:0; text-wrap:balance}
+h3{font-size:18.5px; font-weight:600; letter-spacing:-.01em; margin:30px 0 8px}
+h4{font-size:15px; font-weight:600; margin:20px 0 6px}
+p{margin:0 0 14px; max-width:68ch}
+ul,ol{max-width:68ch; padding-left:22px; margin:0 0 14px}
+li{margin-bottom:5px}
+li::marker{color:var(--ink-3)}
+strong{font-weight:600}
+em{font-style:italic}
+a{color:var(--accent)}
+
+p code, li code, td code, th code, .box code, summary code{
+  background:var(--code-bg); border:1px solid var(--line);
+  padding:1px 5px; border-radius:4px; font-size:.86em; color:var(--code-ink);
+  white-space:nowrap;
+}
+
+/* ---------- Code ---------- */
+.codewrap{
+  border:1px solid var(--line); border-radius:10px; background:var(--code-bg);
+  margin:0 0 16px; overflow:hidden;
+}
+.codewrap > .cap{
+  font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.07em;
+  text-transform:uppercase; color:var(--ink-3);
+  padding:7px 14px; border-bottom:1px solid var(--line); background:var(--surface-2);
+}
+pre{
+  margin:0; padding:14px; overflow-x:auto; font-size:13.2px; line-height:1.62;
+  color:var(--code-ink);
+}
+pre code{background:none; border:none; padding:0; font-size:inherit; white-space:pre}
+.tok-kw{color:var(--kw); font-weight:600}
+.tok-str{color:var(--str)}
+.tok-com{color:var(--com); font-style:italic}
+.tok-num{color:var(--num)}
+
+/* ---------- Callout boxes ---------- */
+.box{
+  border:1px solid var(--line); border-left:3px solid var(--line-2);
+  background:var(--surface); border-radius:8px;
+  padding:14px 16px; margin:0 0 18px; max-width:68ch;
+}
+.box > :last-child{margin-bottom:0}
+.box .tag{
+  display:block; font-family:"IBM Plex Mono",monospace; font-size:10.5px;
+  letter-spacing:.13em; text-transform:uppercase; margin-bottom:7px; font-weight:600;
+}
+.box.trap{border-left-color:var(--warn); background:var(--warn-soft)}
+.box.trap .tag{color:var(--warn)}
+.box.merk{border-left-color:var(--ok); background:var(--ok-soft)}
+.box.merk .tag{color:var(--ok)}
+.box.note{border-left-color:var(--accent); background:var(--accent-soft)}
+.box.note .tag{color:var(--accent)}
+
+/* ---------- Tables ---------- */
+.tablewrap{overflow-x:auto; margin:0 0 18px; border:1px solid var(--line); border-radius:10px; background:var(--surface)}
+table{border-collapse:collapse; width:100%; font-family:"IBM Plex Sans",sans-serif; font-size:14px}
+th,td{padding:9px 13px; text-align:left; border-bottom:1px solid var(--line); vertical-align:top}
+th{
+  font-size:11px; letter-spacing:.09em; text-transform:uppercase; color:var(--ink-3);
+  font-weight:600; background:var(--surface-2); white-space:nowrap;
+}
+tbody tr:last-child td{border-bottom:none}
+td.yes{color:var(--ok); font-weight:600}
+td.no{color:var(--ink-3)}
+
+/* ---------- UML boxes ---------- */
+.umlrow{display:flex; flex-wrap:wrap; gap:18px; align-items:flex-start; margin:0 0 18px}
+.uml{
+  font-family:"IBM Plex Mono",monospace; font-size:12.5px; line-height:1.55;
+  border:1.5px solid var(--ink-2); background:var(--surface);
+  min-width:210px; border-radius:2px; overflow:hidden;
+}
+.uml .name{
+  text-align:center; font-weight:600; padding:7px 12px;
+  border-bottom:1.5px solid var(--ink-2); background:var(--surface-2);
+}
+.uml .name.abs{font-style:italic}
+.uml .part{padding:7px 12px; border-bottom:1.5px solid var(--ink-2)}
+.uml .part:last-child{border-bottom:none}
+.uml .part div{white-space:nowrap; overflow-x:auto}
+.umlnote{
+  font-family:"IBM Plex Sans",sans-serif; font-size:13px; color:var(--ink-2);
+  max-width:34ch; padding-top:4px;
+}
+.arrow{
+  font-family:"IBM Plex Mono",monospace; color:var(--ink-2); font-size:20px;
+  align-self:center; padding:0 2px;
+}
+
+/* ---------- Lernziel checklist ---------- */
+.lz{
+  margin:26px 0 8px; border:1px dashed var(--accent-line); border-radius:10px;
+  background:var(--accent-soft); padding:14px 16px;
+}
+.lz .tag{
+  font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.13em;
+  text-transform:uppercase; color:var(--accent); font-weight:600; display:block; margin-bottom:9px;
+}
+.lz ul{list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:7px; max-width:none}
+.lz li{margin:0}
+.lz label{
+  display:flex; gap:10px; align-items:flex-start; cursor:pointer;
+  font-family:"IBM Plex Sans",sans-serif; font-size:14px; line-height:1.45; color:var(--ink);
+}
+.lz input{margin:3px 0 0; accent-color:var(--accent); flex:none; width:15px; height:15px}
+.lz input:checked + span{color:var(--ink-3); text-decoration:line-through}
+
+/* ---------- Exercises ---------- */
+.ex{
+  border:1px solid var(--line); border-radius:10px; background:var(--surface);
+  padding:16px 18px; margin:0 0 16px; box-shadow:var(--shadow);
+}
+.ex > h4{margin-top:0; display:flex; gap:9px; align-items:baseline}
+.ex > h4 .num{
+  font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--accent);
+  border:1px solid var(--accent-line); border-radius:5px; padding:1px 6px; flex:none;
+}
+.ex > :last-child{margin-bottom:0}
+details{
+  border-top:1px solid var(--line); margin-top:14px; padding-top:12px;
+}
+summary{
+  cursor:pointer; font-family:"IBM Plex Sans",sans-serif; font-weight:600; font-size:13.5px;
+  color:var(--accent); list-style:none; display:inline-flex; gap:7px; align-items:center;
+  border:1px solid var(--accent-line); background:var(--accent-soft);
+  border-radius:7px; padding:5px 12px;
+}
+summary::-webkit-details-marker{display:none}
+summary::before{content:"▸"; font-size:11px; transition:transform .15s ease}
+details[open] summary::before{transform:rotate(90deg)}
+details[open] summary{margin-bottom:12px}
+details > :last-child{margin-bottom:0}
+
+/* ---------- Cheat sheet ---------- */
+.cheat{
+  border:2px solid var(--ink); border-radius:12px; background:var(--surface);
+  padding:20px 20px 8px; margin:0 0 20px;
+}
+.cheatgrid{display:grid; grid-template-columns:repeat(auto-fit,minmax(255px,1fr)); gap:18px}
+.cheatgrid h4{margin:0 0 8px; font-size:13px; letter-spacing:.08em; text-transform:uppercase; color:var(--accent); font-family:"IBM Plex Mono",monospace}
+.cheatgrid ul{font-family:"IBM Plex Sans",sans-serif; font-size:13.5px; padding-left:18px; margin:0}
+.cheatgrid li{margin-bottom:4px}
+.cheatgrid code{white-space:normal}
+
+footer{
+  border-top:1px solid var(--line); margin-top:40px; padding-block:22px 10px;
+  font-family:"IBM Plex Sans",sans-serif; font-size:13px; color:var(--ink-3);
+}
+:focus-visible{outline:2px solid var(--accent); outline-offset:2px; border-radius:4px}
+@media (prefers-reduced-motion:reduce){ *{transition:none!important; animation:none!important} }
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <header class="masthead">
+    <p class="eyebrow">Modul M320 · Objektorientiert Programmieren I</p>
+    <h1>Prüfungstrainer OOP mit C#</h1>
+    <p class="lede">Alles aus Block 01 und Block 02, geordnet nach den offiziellen Lernzielen des Prüfungsblatts. Mit Code, UML, Stolperfallen, Spickzettel und Übungen samt Lösungen.</p>
+    <div class="meta-row">
+      <span class="chip">Prüfungsform: Papier</span>
+      <span class="chip hot">Hilfsmittel: keine</span>
+      <span class="chip">Sprache: C# / .NET</span>
+      <span class="chip">Stoff: Woche 1–4</span>
+    </div>
+  </header>
+
+  <div class="grid">
+
+    <nav class="toc" aria-label="Inhalt">
+      <h4>Lernziele</h4>
+      <ol>
+        <li><a href="#s1"><span class="n">01</span><span>Programmierparadigmen</span></a></li>
+        <li><a href="#s2"><span class="n">02</span><span>Die vier Säulen</span></a></li>
+        <li><a href="#s3"><span class="n">03</span><span>Klassen &amp; Objekte</span></a></li>
+        <li><a href="#s4"><span class="n">04</span><span>Sichtbarkeiten</span></a></li>
+        <li><a href="#s5"><span class="n">05</span><span>Methoden &amp; Konstruktoren</span></a></li>
+        <li><a href="#s6"><span class="n">06</span><span>Fields, Properties, C#-Syntax</span></a></li>
+        <li><a href="#s7"><span class="n">07</span><span>UML-Klassendiagramm</span></a></li>
+        <li><a href="#s8"><span class="n">08</span><span>Vererbung</span></a></li>
+        <li><a href="#s9"><span class="n">09</span><span>Polymorphie</span></a></li>
+        <li><a href="#s10"><span class="n">10</span><span>Spickzettel</span></a></li>
+        <li><a href="#s11"><span class="n">11</span><span>Übungen &amp; Lösungen</span></a></li>
+        <li><a href="#s12"><span class="n">12</span><span>Vertiefungsaufgaben</span></a></li>
+      </ol>
+      <div class="progress-box">
+        <span id="pcount">0 von 25 Lernzielen</span>
+        <div class="bar"><i id="pbar"></i></div>
+      </div>
+    </nav>
+
+    <main>
+
+    <!-- ============ 1 ============ -->
+    <section id="s1">
+      <div class="sec-head"><span class="sec-num">01</span><h2>Programmierparadigmen</h2></div>
+      <p>Ein Paradigma ist die Denkweise, nach der ein Programm aufgebaut wird. In M319 hast du <strong>strukturiert/prozedural</strong> programmiert, in M320 geht es <strong>objektorientiert</strong> weiter.</p>
+
+      <h3>Strukturiert/prozedural vs. objektorientiert</h3>
+      <div class="tablewrap">
+      <table>
+        <thead><tr><th>Kriterium</th><th>Strukturiert / prozedural (C, Pascal)</th><th>Objektorientiert (C#, Java, C++)</th></tr></thead>
+        <tbody>
+          <tr><td>Grundbaustein</td><td>Funktion / Prozedur</td><td>Klasse und deren Objekte</td></tr>
+          <tr><td>Daten und Logik</td><td><strong>getrennt</strong>: Daten in Variablen/Structs, Logik in Funktionen</td><td><strong>zusammen</strong> in der Klasse gekapselt</td></tr>
+          <tr><td>Ablauf</td><td>Programm ruft Funktionen nacheinander auf</td><td>Objekte senden sich Nachrichten (Methodenaufrufe)</td></tr>
+          <tr><td>Datenschutz</td><td>Daten meist global/frei zugänglich</td><td>Zugriff über Sichtbarkeiten gesteuert (<code>private</code>…)</td></tr>
+          <tr><td>Wiederverwendung</td><td>Funktionen kopieren oder aufrufen</td><td>Vererbung, Polymorphie, Komposition</td></tr>
+          <tr><td>Modellierung</td><td>Ablauf der Verarbeitung</td><td>Abbild der realen Welt (Kunde, Rechnung, Auto)</td></tr>
+        </tbody>
+      </table>
+      </div>
+
+      <div class="box note">
+        <span class="tag">Prüfungsantwort in einem Satz</span>
+        <p>Beim strukturierten Programmieren sind Daten und Funktionen getrennt und das Programm ist eine Folge von Funktionsaufrufen; beim objektorientierten Programmieren werden Daten und die dazu passenden Methoden in Klassen zusammengefasst, aus denen zur Laufzeit Objekte entstehen.</p>
+      </div>
+
+      <h3>Weitere Paradigmen (nur zur Einordnung)</h3>
+      <ul>
+        <li><strong>Prozedural:</strong> Pascal, C</li>
+        <li><strong>Objektorientiert:</strong> C#, C++, Java</li>
+        <li><strong>Logisch:</strong> Prolog</li>
+        <li><strong>Funktional:</strong> F#, JavaScript</li>
+      </ul>
+
+      <div class="lz">
+        <span class="tag">Lernziele dieses Kapitels</span>
+        <ul>
+          <li><label><input type="checkbox" data-lz="1"><span>Ich kann die objektorientierte von der strukturierten Programmierung unterscheiden.</span></label></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ 2 ============ -->
+    <section id="s2">
+      <div class="sec-head"><span class="sec-num">02</span><h2>Die vier Säulen der OOP</h2></div>
+      <p>Das ist die sicherste Frage der ganzen Prüfung: aufzählen <em>und</em> je mit einem Codebeispiel erklären. Merkwort: <strong>KAVP</strong> – Kapselung, Abstraktion, Vererbung, Polymorphie.</p>
+
+      <div class="tablewrap">
+      <table>
+        <thead><tr><th>Säule</th><th>Englisch</th><th>Kern in einem Satz</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Kapselung</strong></td><td>Encapsulation</td><td>Daten und Logik werden zu einem neuen Datentyp zusammengefasst; das Objekt gibt nur ausgewählte Informationen preis und verpackt den Rest.</td></tr>
+          <tr><td><strong>Abstraktion</strong></td><td>Abstraction</td><td>Das Objekt versteckt Details und bietet Operationen auf einer höheren Bedeutungsebene an, um Komplexität zu reduzieren.</td></tr>
+          <tr><td><strong>Vererbung</strong></td><td>Inheritance</td><td>Ein neuer Datentyp übernimmt die Funktionalität eines bestehenden und erweitert oder verändert sie.</td></tr>
+          <tr><td><strong>Polymorphie</strong></td><td>Polymorphism</td><td>Vielgestaltigkeit: Typen mit gemeinsamer Schnittstelle definieren eigenes Verhalten und sind dadurch austauschbar.</td></tr>
+        </tbody>
+      </table>
+      </div>
+
+      <h3>Kapselung – Beispiel <code>FullName</code></h3>
+      <p>Vorname und Nachname gehören zusammen, also kommen sie mit ihrer Logik in eine Klasse. Von aussen sieht man nur die Methoden, nicht die Felder.</p>
+      <div class="codewrap"><div class="cap">C# · Kapselung</div><pre><code>class FullName
+{
+    private string _firstName;   // versteckte Daten
+    private string _lastName;
+
+    public FullName(string firstName, string lastName)
+    {
+        _firstName = firstName;
+        _lastName = lastName;
+    }
+
+    public string FormatDefault()   // sichtbare Schnittstelle
+    {
+        return $"{_firstName} {_lastName}";
+    }
+
+    public string FormatSwiss()
+    {
+        return $"{_lastName}, {_firstName}";
+    }
+}
+
+FullName joe = new FullName("Joe", "Doe");
+Console.WriteLine(joe.FormatDefault());  // Joe Doe
+Console.WriteLine(joe.FormatSwiss());    // Doe, Joe</code></pre></div>
+      <p>Bild dazu: ein elektronisches Gerät versteckt die komplizierten Vorgänge und bietet nur eine einfache Bedienoberfläche an.</p>
+
+      <h3>Abstraktion – Beispiel <code>Counter</code></h3>
+      <p>Ein Zähler ist fast wie eine Zahl, aber mit sinnvollen Einschränkungen: er beginnt bei 0, kann nur um 1 erhöht werden und nie gesenkt. Genau <em>wegen</em> dieser Einschränkungen ist er besser als ein blankes <code>int</code>, das jeder Programmteil beliebig verändern könnte.</p>
+      <div class="codewrap"><div class="cap">C# · Abstraktion</div><pre><code>class Counter
+{
+    private int _count;
+
+    public Counter()
+    {
+        _count = 0;
+    }
+
+    public void Increase()   // nur erhöhen, nie senken
+    {
+        _count++;
+    }
+
+    public int GetCount()
+    {
+        return _count;
+    }
+}
+
+Counter visitors = new Counter();
+visitors.Increase();
+visitors.Increase();
+visitors.Increase();
+Console.WriteLine(visitors.GetCount());  // 3</code></pre></div>
+
+      <div class="box note">
+        <span class="tag">Kapselung vs. Abstraktion</span>
+        <p><strong>Kapselung</strong> = das <em>Wie</em> verstecken (Daten und Implementierung sind privat). <strong>Abstraktion</strong> = das <em>Was</em> anbieten (eine einfache, sinnvolle Schnittstelle auf höherer Ebene). Die Kapselung ist die technische Voraussetzung für die Abstraktion.</p>
+      </div>
+
+      <h3>Vererbung – Beispiel <code>Person</code></h3>
+      <div class="codewrap"><div class="cap">C# · Vererbung</div><pre><code>class Person
+{
+    private string _firstName;
+    private string _lastName;
+
+    protected Person(string firstName, string lastName)
+    {
+        _firstName = firstName;
+        _lastName = lastName;
+    }
+
+    protected string FullName()
+    {
+        return $"{_firstName} {_lastName}";
+    }
+}
+
+class Employee : Person        // Employee IST EINE Person
+{
+    private string _company;
+
+    public Employee(string firstName, string lastName, string company)
+        : base(firstName, lastName)      // Basiskonstruktor aufrufen
+    {
+        _company = company;
+    }
+
+    public string Describe()
+    {
+        return $"{FullName()} working at {_company}";   // geerbte Methode
+    }
+}</code></pre></div>
+
+      <h3>Polymorphie – Beispiel Rechenoperationen</h3>
+      <p>Der abstrakte Typ <code>Operation</code> tritt in verschiedenen Gestalten auf: <code>Add</code>, <code>Sub</code>, <code>Mul</code>, <code>Div</code>. <code>Value.Calculate</code> muss keine davon kennen.</p>
+      <div class="codewrap"><div class="cap">C# · Polymorphie</div><pre><code>abstract class Operation
+{
+    protected double Operand;
+
+    protected Operation(double operand)
+    {
+        Operand = operand;
+    }
+
+    public abstract double Perform(double x);   // keine Implementierung
+}
+
+class Add : Operation
+{
+    public Add(double operand) : base(operand) { }
+    public override double Perform(double x) { return x + Operand; }
+}
+
+class Sub : Operation
+{
+    public Sub(double operand) : base(operand) { }
+    public override double Perform(double x) { return x - Operand; }
+}
+
+class Mul : Operation
+{
+    public Mul(double operand) : base(operand) { }
+    public override double Perform(double x) { return x * Operand; }
+}
+
+class Div : Operation
+{
+    public Div(double operand) : base(operand) { }
+    public override double Perform(double x) { return x / Operand; }
+}
+
+class Value
+{
+    public double State;
+    public Value(double value) { State = value; }
+
+    public Value Calculate(List&lt;Operation&gt; operations)
+    {
+        double tmp = State;
+        foreach (Operation operation in operations)
+        {
+            tmp = operation.Perform(tmp);   // welcher Typ? egal!
+        }
+        return new Value(tmp);
+    }
+}
+
+Value x = new Value(7);
+Value result = x.Calculate(new List&lt;Operation&gt; {
+    new Add(1), new Div(2), new Sub(1), new Mul(2)
+});
+Console.WriteLine(result.State);   // 6</code></pre></div>
+      <p>Rechenweg: 7 + 1 = 8 → 8 / 2 = 4 → 4 − 1 = 3 → 3 · 2 = <strong>6</strong>.</p>
+
+      <div class="lz">
+        <span class="tag">Lernziele dieses Kapitels</span>
+        <ul>
+          <li><label><input type="checkbox" data-lz="2"><span>Ich kann die vier Säulen der OOP aufzählen und anhand eines Codebeispiels erklären.</span></label></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ 3 ============ -->
+    <section id="s3">
+      <div class="sec-head"><span class="sec-num">03</span><h2>Klassen und Objekte</h2></div>
+
+      <p>Eine <strong>Klasse</strong> beschreibt als Bauplan die Gemeinsamkeiten einer Menge von Objekten: alle Attribute, die sie kennzeichnen, und alle Methoden, die ihre Funktionalität beschreiben. Ein <strong>Objekt</strong> (= Instanz) ist ein konkretes Exemplar, das nach diesem Bauplan im Speicher angelegt wird und eigene Werte für die Attribute besitzt.</p>
+
+      <div class="tablewrap">
+      <table>
+        <thead><tr><th></th><th>Klasse</th><th>Objekt / Instanz</th></tr></thead>
+        <tbody>
+          <tr><td>Bild</td><td>Bauplan eines Hauses</td><td>das konkrete Haus an der Bahnhofstrasse 3</td></tr>
+          <tr><td>Existiert</td><td>im Quellcode</td><td>zur Laufzeit im RAM</td></tr>
+          <tr><td>Anzahl</td><td>einmal</td><td>beliebig viele</td></tr>
+          <tr><td>Werte</td><td>nur die Deklaration</td><td>eigene Werte je Objekt</td></tr>
+          <tr><td>Geometrie-Beispiel</td><td>Klasse <code>Rectangle</code> (alle Rechtecke)</td><td>das Rechteck 3 cm × 5 cm</td></tr>
+        </tbody>
+      </table>
+      </div>
+
+      <h3>Klasse definieren und instanziieren</h3>
+      <p>Mit einer Klasse erzeugst du einen <strong>eigenen Datentyp</strong>. Elementare Datentypen (<code>int</code>, <code>double</code>, …) speichern nur einen Wert – eine Klasse speichert mehrere Attribute plus Verhalten. Konvention: eine Datei pro Klasse, Dateiname = Klassenname (<code>Rectangle.cs</code>).</p>
+      <div class="codewrap"><div class="cap">C# · Klasse, Konstruktor, Methode</div><pre><code>class Rectangle
+{
+    private int _width;          // Attribute = Instanzvariablen
+    private int _length;
+
+    public Rectangle(int width, int length)   // Konstruktor
+    {
+        _width = width;
+        _length = length;
+    }
+
+    public int CalculateArea()                // Methode
+    {
+        return _width * _length;
+    }
+}
+
+// Verwendung
+Rectangle myRectangle;                       // 1. Referenzvariable (nur Verweis)
+myRectangle = new Rectangle(4, 6);           // 2. new legt Objekt im RAM an
+Console.WriteLine(myRectangle.CalculateArea());   // 24</code></pre></div>
+
+      <div class="box note">
+        <span class="tag">Was <code>new</code> genau macht</span>
+        <p><strong>Schritt 1:</strong> <code>Rectangle myRectangle;</code> reserviert nur Speicher für die <em>Referenz</em> (einen Zeiger). Das Objekt existiert noch nicht. <strong>Schritt 2:</strong> <code>new Rectangle(4, 6)</code> legt das Objekt im RAM an, führt den Konstruktor aus und gibt die Referenz darauf zurück. Objekte derselben Klasse unterscheiden sich in ihren Attributwerten und in ihrer Speicheradresse.</p>
+      </div>
+
+      <h3>Member einer Klasse</h3>
+      <p>Alles, was in einer Klasse steht, heisst <strong>Member</strong> (Mitglied):</p>
+      <ul>
+        <li><strong>Attribute</strong> – speichern Daten. Unterteilt in <em>Fields</em> (Felder) und <em>Properties</em> (Eigenschaften), siehe Kapitel 06.</li>
+        <li><strong>Methoden</strong> – führen Aktionen aus.</li>
+        <li><strong>Konstruktoren</strong> – erzeugen und initialisieren das Objekt.</li>
+      </ul>
+      <p>Attribute werden in der Klasse <em>ausserhalb</em> jeder Methode deklariert. Variablen innerhalb einer Methode sind <strong>lokale Variablen</strong> und verschwinden mit dem Methodenaufruf.</p>
+
+      <div class="lz">
+        <span class="tag">Lernziele dieses Kapitels</span>
+        <ul>
+          <li><label><input type="checkbox" data-lz="3"><span>Ich kenne den Unterschied einer Klasse und eines Objektes/einer Instanz und kann ihn anhand eines Codebeispiels erklären.</span></label></li>
+          <li><label><input type="checkbox" data-lz="4"><span>Ich kann Klassen mit Eigenschaften/Attributen, Konstruktor und Methoden definieren.</span></label></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ 4 ============ -->
+    <section id="s4">
+      <div class="sec-head"><span class="sec-num">04</span><h2>Sichtbarkeiten</h2></div>
+      <p>Sichtbarkeiten (Zugriffsmodifizierer) steuern, <strong>wer welche Klasse und welches Member verwenden darf</strong>. Sie können – und sollen! – auf Klassen und deren Member gesetzt werden. In C# gibt es die vier Schlüsselwörter <code>public</code>, <code>private</code>, <code>protected</code>, <code>internal</code>.</p>
+
+      <div class="tablewrap">
+      <table>
+        <thead><tr><th>Modifizierer</th><th>Sichtbar für</th><th>Auf <code>class</code>?</th><th>Typischer Einsatz</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><code>public</code></td>
+            <td>überall – eigene Klasse, Nachbarklassen, andere Projekte/Assemblies. Erscheint in IntelliSense.</td>
+            <td class="yes">ja</td>
+            <td>öffentliche API: Instanzen erzeugen, Methoden aufrufen</td>
+          </tr>
+          <tr>
+            <td><code>private</code></td>
+            <td>nur in der gleichen Klasse selbst</td>
+            <td class="no">nein</td>
+            <td>Kapselung: Zugriff von aussen verhindern</td>
+          </tr>
+          <tr>
+            <td><code>protected</code></td>
+            <td>eigene Klasse + abgeleitete Klassen</td>
+            <td class="no">nein</td>
+            <td>von aussen unsichtbar, aber in Spezialisierungen nutzbar</td>
+          </tr>
+          <tr>
+            <td><code>internal</code></td>
+            <td>nur innerhalb des eigenen Assembly (desselben kompilierten Projekts, z.&nbsp;B. dieselbe .dll/.exe)</td>
+            <td class="yes">ja</td>
+            <td>interne Helfer verstecken, öffentliche API sauber halten</td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+
+      <div class="box note">
+        <span class="tag">Merkhilfe internal</span>
+        <p><code>internal</code> verhält sich <strong>innerhalb</strong> des Projekts wie <code>public</code> und <strong>ausserhalb</strong> des Projekts wie <code>private</code>.</p>
+      </div>
+
+      <div class="codewrap"><div class="cap">C# · Lese- und Schreibzugriff steuern</div><pre><code>public class Konto
+{
+    private string _geheimeNotiz;                // nur in dieser Klasse sichtbar
+    protected double Limite;                     // auch in abgeleiteten Klassen
+    internal int FilialId;                       // nur im eigenen Projekt
+
+    public double Saldo { get; private set; }    // aussen lesen, intern schreiben
+    public string Iban { get; init; }            // nur bei Erstellung setzbar
+
+    public void Einzahlen(double betrag)         // kontrollierter Schreibzugriff
+    {
+        if (betrag &gt; 0) Saldo += betrag;
+    }
+}</code></pre></div>
+
+      <h3>Spezialfall: privater Konstruktor</h3>
+      <p>Auch ein Konstruktor kann <code>private</code> sein, um die Instanziierung zu steuern – z.&nbsp;B. damit Objekte nur über eine statische Factory-Methode entstehen. Wird beim Testing oft verwendet, um Testdaten immer gleich zu erzeugen.</p>
+      <div class="codewrap"><div class="cap">C# · privater Konstruktor</div><pre><code>public class TestPerson
+{
+    public string Name { get; init; }
+
+    private TestPerson(string name)   // von aussen NICHT aufrufbar
+    {
+        Name = name;
+    }
+
+    public static TestPerson Standard()
+    {
+        return new TestPerson("Max Muster");
+    }
+}
+
+TestPerson p = TestPerson.Standard();   // einziger Weg</code></pre></div>
+
+      <div class="lz">
+        <span class="tag">Lernziele dieses Kapitels</span>
+        <ul>
+          <li><label><input type="checkbox" data-lz="5"><span>Ich kann die Sichtbarkeit von Klassen und ihren Mitgliedern steuern (wer hat Lese- und/oder Schreibzugriff) und kenne die Syntax der vier Schlüsselwörter in C#.</span></label></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ 5 ============ -->
+    <section id="s5">
+      <div class="sec-head"><span class="sec-num">05</span><h2>Methoden und Konstruktoren</h2></div>
+
+      <h3>Signatur und Rumpf</h3>
+      <div class="codewrap"><div class="cap">C# · Aufbau einer Methode</div><pre><code>public    double   Distanz   (Kreis ziel)        {  ...  }
+//  ↑         ↑         ↑           ↑               ↑
+// Sicht-  Rückgabe-   Name      Parameter        Rumpf (Body)
+// barkeit   typ
+// └──────── Signatur (Name + Parameterliste) ────┘</code></pre></div>
+      <ul>
+        <li><strong>Signatur</strong> = Methodenname + Parameterliste (Typ, Anzahl und Reihenfolge der Parameter). Sie ist die „Visitenkarte“: daran erkennt der Compiler, welche Methode gemeint ist.</li>
+        <li><strong>Rumpf</strong> = der Code zwischen den geschweiften Klammern, also <em>wie</em> die Methode arbeitet.</li>
+        <li>Der <strong>Rückgabetyp allein</strong> genügt nicht, um zwei Methoden zu unterscheiden – zwei Methoden dürfen sich nicht nur im Rückgabetyp unterscheiden.</li>
+      </ul>
+      <p>Namenskonvention für Methodennamen: <strong>PascalCase / UpperCamelCase</strong>. Methoden werden immer innerhalb einer Klasse deklariert – sie „leben“ dort, wo sie thematisch hingehören (Schrank-Funktionen zum Schrank, Dusch-Funktionen zur Dusche).</p>
+
+      <h3>Rückgabewerte</h3>
+      <p>Der Rückgabetyp steht <strong>in der Signatur, direkt vor dem Methodennamen</strong>. Eine Methode kann zurückgeben:</p>
+      <div class="tablewrap">
+      <table>
+        <thead><tr><th>Rückgabe</th><th>Bedeutung</th><th>Typischer Zweck</th></tr></thead>
+        <tbody>
+          <tr><td><code>void</code></td><td>gibt „nichts“ zurück</td><td>Zustandsänderung</td></tr>
+          <tr><td><code>int</code>, <code>double</code>, <code>bool</code>, <code>string</code>…</td><td>fundamentaler Datentyp</td><td>Berechnung, Zustandsabfrage</td></tr>
+          <tr><td>ein Objekt, z.&nbsp;B. <code>Kreis</code></td><td>Referenz auf ein Objekt</td><td>Aufgabe, Berechnung, Zustandsabfrage</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="codewrap"><div class="cap">C# · void und return</div><pre><code>public void Reset()              // gibt nichts zurück
+{
+    _count = 0;
+    return;                      // optional: beendet die Methode vorzeitig
+}
+
+public int GetCount()            // muss einen int zurückgeben
+{
+    return _count;               // return ist hier Pflicht
+}</code></pre></div>
+
+      <h3>Parameter</h3>
+      <ul>
+        <li>Übergeben Informationen an die Methode. Reihenfolge und Typ sind fix; die Anzahl ist beliebig (auch null).</li>
+        <li><strong>Default-Parameter:</strong> <code>public void Log(string text, bool laut = false)</code> – der Aufruf <code>Log("hi")</code> genügt.</li>
+        <li><strong>Nullable-Parameter:</strong> <code>public void SetBoss(Employee? boss)</code> – darf <code>null</code> sein.</li>
+        <li><strong>Listen und Arrays</strong> sind als Parameter möglich: <code>void Print(List&lt;string&gt; namen)</code>.</li>
+        <li>Auch <strong>Methoden</strong> können als Parameter übergeben werden; die Kurzschreibweise dafür sind <strong>Lambda Expressions</strong>.</li>
+      </ul>
+
+      <h3>Konstruktoren</h3>
+      <ul>
+        <li>Heisst <strong>exakt wie die Klasse</strong> und hat <strong>keinen Rückgabetyp</strong> (auch kein <code>void</code>).</li>
+        <li>Wird beim <code>new</code> automatisch ausgeführt und initialisiert das Objekt.</li>
+        <li><strong>Default-Konstruktor:</strong> der parameterlose Konstruktor. Definierst du <em>gar keinen</em> Konstruktor, erzeugt der Compiler ihn automatisch. Sobald du einen eigenen Konstruktor schreibst, ist der automatische weg – dann musst du den parameterlosen selbst ergänzen, falls du ihn brauchst.</li>
+        <li><strong>Überladen:</strong> mehrere Konstruktoren mit unterschiedlicher Parameterliste.</li>
+      </ul>
+      <div class="codewrap"><div class="cap">C# · Konstruktoren überladen + this/base</div><pre><code>class Rectangle
+{
+    private int _width;
+    private int _length;
+
+    public Rectangle()                       // Default-Konstruktor
+        : this(1, 1)                         // this(...) ruft anderen Konstruktor
+    { }
+
+    public Rectangle(int seite)              // Quadrat
+        : this(seite, seite)
+    { }
+
+    public Rectangle(int width, int length)  // Hauptkonstruktor
+    {
+        this._width = width;                 // this = dieses Objekt
+        this._length = length;
+    }
+}
+
+class Square : Rectangle
+{
+    public Square(int seite)
+        : base(seite, seite)                 // base(...) = Konstruktor der Basisklasse
+    { }
+}</code></pre></div>
+
+      <div class="box merk">
+        <span class="tag">this und base</span>
+        <p><code>this</code> = <em>dieses</em> Objekt. Nützlich, wenn Parameter und Attribut gleich heissen (<code>this.name = name;</code>) und für Konstruktor-Verkettung <code>: this(...)</code>.<br>
+        <code>base</code> = die <em>Basisklasse</em>. <code>: base(...)</code> ruft deren Konstruktor auf, <code>base.Methode()</code> ruft deren Implementierung auf – typisch in einem <code>override</code>, wenn du das Basisverhalten erweitern statt ersetzen willst.</p>
+      </div>
+
+      <h3>Statische Methoden</h3>
+      <div class="tablewrap">
+      <table>
+        <thead><tr><th>Vorteil</th><th>Einschränkung</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Keine Instanz nötig – die Methode gehört zur <strong>Klasse</strong>, nicht zu einem Objekt.</td>
+            <td>Kein Zugriff auf Instanzvariablen und Instanzmethoden (kein <code>this</code>).</td>
+          </tr>
+          <tr>
+            <td>Ideal für Berechnungen und Hilfsfunktionen ohne Objektzustand.</td>
+            <td>Zugriff nur auf <strong>statische</strong> Variablen und Methoden der Klasse.</td>
+          </tr>
+          <tr>
+            <td>Aufruf direkt über <code>Klassenname.Methodenname(…)</code>, z.&nbsp;B. <code>Math.Abs(-25)</code>.</td>
+            <td>Nicht über ein Objekt aufrufbar.</td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="codewrap"><div class="cap">C# · static</div><pre><code>class MathHelper
+{
+    private int _letztesResultat;            // Instanzvariable
+
+    public static int Quadrat(int x)
+    {
+        // _letztesResultat = x * x;         // FEHLER: statisch → kein Instanzzugriff
+        return x * x;
+    }
+}
+
+int y = MathHelper.Quadrat(5);               // richtig: über den Klassennamen
+Console.WriteLine(Math.Abs(-25));            // 25 – kein Math-Objekt nötig</code></pre></div>
+
+      <div class="lz">
+        <span class="tag">Lernziele dieses Kapitels</span>
+        <ul>
+          <li><label><input type="checkbox" data-lz="6"><span>Ich weiss, was ein Rückgabewert ist, wo er deklariert wird, und wie man Methoden schreibt, die nichts zurückgeben.</span></label></li>
+          <li><label><input type="checkbox" data-lz="7"><span>Ich kenne den Unterschied von Methoden-Signatur und -Rumpf.</span></label></li>
+          <li><label><input type="checkbox" data-lz="8"><span>Ich kenne Einschränkungen und Vorteile statischer Methoden und weiss, wie man sie verwendet.</span></label></li>
+          <li><label><input type="checkbox" data-lz="9"><span>Ich kann Konstruktoren implementieren, weiss was ein Default-Konstruktor ist und kann Konstruktoren überladen.</span></label></li>
+          <li><label><input type="checkbox" data-lz="10"><span>Ich kenne <code>this</code> und <code>base</code> und kann sie in Methoden und Konstruktoren einsetzen.</span></label></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ 6 ============ -->
+    <section id="s6">
+      <div class="sec-head"><span class="sec-num">06</span><h2>Fields, Properties und C#-Syntax</h2></div>
+
+      <h3>Field vs. Property</h3>
+      <div class="tablewrap">
+      <table>
+        <thead><tr><th></th><th>Field (Feld)</th><th>Property (Eigenschaft)</th></tr></thead>
+        <tbody>
+          <tr><td>Was</td><td>eine Variable in der Klasse</td><td>ein „intelligenter“ Zugriff mit <code>get</code>/<code>set</code></td></tr>
+          <tr><td>Syntax</td><td><code>private string _name;</code></td><td><code>public string Name { get; set; }</code></td></tr>
+          <tr><td>Namen</td><td>privat: <code>_camelCase</code></td><td><code>PascalCase</code></td></tr>
+          <tr><td>Kontrolle</td><td>keine – direkter Zugriff</td><td>Lese-/Schreibrecht getrennt steuerbar, Logik möglich</td></tr>
+          <tr><td>Absicht sichtbar?</td><td>nein – man sieht nicht, ob lesend oder schreibend gemeint</td><td>ja – Properties machen die Absicht klar und schützen den Zustand</td></tr>
+          <tr><td>Im UML</td><td colspan="2">beide werden gleich als Attribut eingetragen</td></tr>
+        </tbody>
+      </table>
+      </div>
+
+      <div class="codewrap"><div class="cap">C# · von der Langform zur Auto-Property</div><pre><code>// Langform mit Backing Field
+private string _name;
+public string Name
+{
+    get { return _name; }
+    set { _name = value; }     // "value" ist der übergebene Wert
+}
+
+// Auto-Property = Kurzschreibweise, Compiler erzeugt das Feld selbst
+public string Name { get; set; }</code></pre></div>
+
+      <h3>Die vier Property-Varianten</h3>
+      <div class="tablewrap">
+      <table>
+        <thead><tr><th>Schreibweise</th><th>Beschreibbar</th><th>Wann verwenden</th></tr></thead>
+        <tbody>
+          <tr><td><code>{ get; set; }</code></td><td>jederzeit, von überall</td><td>wirklich frei veränderbare Werte</td></tr>
+          <tr><td><code>{ get; }</code></td><td>nur im Konstruktor</td><td>unveränderliche (immutable) Objekte</td></tr>
+          <tr><td><code>{ get; init; }</code></td><td>nur bei der Objekt-Initialisierung</td><td>unveränderliche Daten: Geburtstag, Fahrgestellnummer</td></tr>
+          <tr><td><code>{ get; private set; }</code></td><td>nur intern, aus der Klasse selbst</td><td>Werte, die sich nur kontrolliert über Methoden/interne Logik ändern dürfen</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="codewrap"><div class="cap">C# · Property-Varianten in Aktion</div><pre><code>class Auto
+{
+    public string Fahrgestellnummer { get; init; }   // nur bei Initialisierung
+    public int Kilometerstand { get; private set; }  // nur intern änderbar
+    public string Farbe { get; set; }                // frei änderbar
+
+    public void Fahren(int km)
+    {
+        Kilometerstand += km;                        // erlaubt (intern)
+    }
+}
+
+Auto a = new Auto { Fahrgestellnummer = "WVW123", Farbe = "rot" };
+a.Farbe = "blau";           // ok
+a.Fahren(120);              // ok
+// a.Kilometerstand = 0;    // FEHLER: private set
+// a.Fahrgestellnummer = "X";  // FEHLER: init</code></pre></div>
+
+      <h3>Namenskonventionen in C#</h3>
+      <div class="tablewrap">
+      <table>
+        <thead><tr><th>Element</th><th>Konvention</th><th>Beispiel</th></tr></thead>
+        <tbody>
+          <tr><td>Klasse</td><td>PascalCase, Substantiv, Einzahl</td><td><code>Rectangle</code>, <code>FullName</code></td></tr>
+          <tr><td>Methode</td><td>PascalCase, Verb</td><td><code>CalculateArea()</code></td></tr>
+          <tr><td>Property</td><td>PascalCase</td><td><code>FirstName</code></td></tr>
+          <tr><td>Private Field</td><td>Unterstrich + camelCase</td><td><code>_firstName</code></td></tr>
+          <tr><td>Instanz / lokale Variable / Parameter</td><td>camelCase</td><td><code>myRectangle</code>, <code>firstName</code></td></tr>
+          <tr><td>Interface</td><td>I + PascalCase</td><td><code>IComparable</code></td></tr>
+          <tr><td>Datei</td><td>Dateiname = Klassenname</td><td><code>Rectangle.cs</code></td></tr>
+        </tbody>
+      </table>
+      </div>
+
+      <h3>Nullable <code>?</code></h3>
+      <p>Das Fragezeichen hinter einem Typ markiert ihn als „darf <code>null</code> sein“. Bei Werttypen (<code>int</code>, <code>double</code>, <code>bool</code>) wird der Typ dadurch überhaupt erst null-fähig; bei Referenztypen (<code>string</code>, eigene Klassen) sagst du dem Compiler damit, dass <code>null</code> hier <em>beabsichtigt</em> ist – ohne <code>?</code> warnt er dich.</p>
+      <div class="codewrap"><div class="cap">C# · nullable</div><pre><code>int? alter = null;               // Werttyp, der null sein darf
+string? spitzname = null;        // Referenztyp, null ausdrücklich erlaubt
+Employee? boss = null;           // z.B. der CEO hat keinen Chef
+
+// Immer prüfen, bevor man darauf zugreift:
+if (boss != null)
+{
+    Console.WriteLine(boss.Describe());
+}
+
+Console.WriteLine(boss?.Describe());          // null-conditional: ruft nur auf, wenn nicht null
+Console.WriteLine(spitzname ?? "unbekannt");  // null-coalescing: Ersatzwert
+int sicheresAlter = alter ?? 0;</code></pre></div>
+
+      <h3>Listen</h3>
+      <div class="codewrap"><div class="cap">C# · List&lt;T&gt;</div><pre><code>List&lt;string&gt; namen = new List&lt;string&gt;();        // leere Liste
+namen.Add("Anna");
+namen.Add("Beat");
+namen.Remove("Anna");
+
+List&lt;int&gt; zahlen = new List&lt;int&gt; { 1, 2, 3 };   // mit Startwerten
+int erste = zahlen[0];                          // Index ab 0
+int anzahl = zahlen.Count;                      // .Count, NICHT .Length
+
+foreach (int z in zahlen)
+{
+    Console.WriteLine(z);
+}
+
+List&lt;Animal&gt; tiere = new List&lt;Animal&gt; { new Dog(), new Cat() };  // polymorph!</code></pre></div>
+      <div class="box trap">
+        <span class="tag">Stolperfalle</span>
+        <p>Liste → <code>.Count</code>, Array und String → <code>.Length</code>. Und: <code>List&lt;T&gt;</code> braucht <code>using System.Collections.Generic;</code> (in modernen Projekten durch implicit usings meist schon drin).</p>
+      </div>
+
+      <h3>Jede Klasse erbt von <code>object</code></h3>
+      <p>Wenn keine Basisklasse angegeben wird, erbt jede Klasse in C# und Java automatisch von <code>object</code> – <code>class Auto</code> ist gleichbedeutend mit <code>class Auto : object</code>. <code>object</code> ist die gemeinsame Wurzel aller Klassen. Dadurch hat jedes Objekt von Anfang an <code>ToString()</code>, <code>Equals()</code> und <code>GetHashCode()</code>.</p>
+
+      <div class="lz">
+        <span class="tag">Lernziele dieses Kapitels</span>
+        <ul>
+          <li><label><input type="checkbox" data-lz="11"><span>Ich kann Properties von Fields unterscheiden und kenne die Kurzschreibweise bzw. Auto-Properties.</span></label></li>
+          <li><label><input type="checkbox" data-lz="12"><span>Ich kenne die Namenskonventionen für Klassen, Instanzen, Methoden und Attribute in C#.</span></label></li>
+          <li><label><input type="checkbox" data-lz="13"><span>Ich weiss, wie man einen Typ als nullable (<code>?</code>) markiert, und kann das an einem Codebeispiel erklären.</span></label></li>
+          <li><label><input type="checkbox" data-lz="14"><span>Ich kenne die C#-Syntax für Listen.</span></label></li>
+          <li><label><input type="checkbox" data-lz="15"><span>Ich weiss, dass jede Klasse automatisch von der <code>object</code>-Klasse abgeleitet wird.</span></label></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ 7 ============ -->
+    <section id="s7">
+      <div class="sec-head"><span class="sec-num">07</span><h2>UML-Klassendiagramm</h2></div>
+
+      <p>UML (Unified Modeling Language) dient der grafischen Modellierung von Klassen, Schnittstellen und deren Beziehungen. Ganze Systeme lassen sich damit darstellen, <strong>bevor</strong> sie implementiert werden – typischerweise in der Konzeptionsphase eines Projekts. Alle Entwickler können so ihre Absichten in einer allgemein verständlichen Sprache zeigen.</p>
+
+      <h4>Wann ist UML sinnvoll? (mögliche Prüfungsbeispiele)</h4>
+      <ul>
+        <li>Konzeptionsphase: Struktur planen, bevor eine Zeile Code geschrieben wird</li>
+        <li>Kommunikation im Team und mit dem Kunden – sprachunabhängig und ohne Code-Details</li>
+        <li>Dokumentation eines bestehenden Systems, Einarbeitung neuer Entwickler</li>
+        <li>Vererbungshierarchien und Beziehungen zwischen Klassen auf einen Blick prüfen</li>
+      </ul>
+
+      <h3>Aufbau einer Klassen-Box</h3>
+      <div class="umlrow">
+        <div class="uml">
+          <div class="name">Kreis</div>
+          <div class="part">
+            <div>- mittelpunktX : double</div>
+            <div>- mittelpunktY : double</div>
+            <div>+ Radius : double</div>
+          </div>
+          <div class="part">
+            <div>+ Kreis(x:double, y:double, r:double)</div>
+            <div>+ Distanz(ziel:Kreis) : double</div>
+            <div>+ Flaeche() : double</div>
+          </div>
+        </div>
+        <p class="umlnote"><strong>Oben:</strong> Klassenname.<br><strong>Mitte:</strong> Attribute.<br><strong>Unten:</strong> Konstruktoren &amp; Methoden.</p>
+      </div>
+
+      <div class="tablewrap">
+      <table>
+        <thead><tr><th>UML-Zeichen</th><th>Bedeutung</th></tr></thead>
+        <tbody>
+          <tr><td><code>+</code></td><td><code>public</code></td></tr>
+          <tr><td><code>-</code></td><td><code>private</code></td></tr>
+          <tr><td><code>#</code></td><td><code>protected</code></td></tr>
+          <tr><td><code>name : Typ</code></td><td>Attribut: hinter dem Doppelpunkt folgt der Datentyp</td></tr>
+          <tr><td><code>Methode(p:Typ) : Rückgabetyp</code></td><td>Parameter <strong>umgekehrt zu C#</strong>: Variablenname zuerst, dann Datentyp</td></tr>
+          <tr><td><em>kursiver</em> Name</td><td>abstrakte Klasse bzw. abstrakte Methode</td></tr>
+        </tbody>
+      </table>
+      </div>
+
+      <div class="box trap">
+        <span class="tag">Stolperfalle</span>
+        <p>In C# schreibst du <code>Distanz(Kreis ziel)</code> – Datentyp zuerst. In UML schreibst du <code>Distanz(ziel:Kreis)</code> – Name zuerst, Datentyp nach dem Doppelpunkt. Fields und Properties werden in UML <strong>gleich</strong> eingetragen.</p>
+      </div>
+
+      <h3>UML → C# übersetzen</h3>
+      <div class="codewrap"><div class="cap">C# · aus der Box oben</div><pre><code>public class Kreis
+{
+    private double mittelpunktX;
+    private double mittelpunktY;
+    public double Radius { get; set; }
+
+    public Kreis(double x, double y, double r)
+    {
+        mittelpunktX = x;
+        mittelpunktY = y;
+        Radius = r;
+    }
+
+    public double Distanz(Kreis ziel)
+    {
+        double xDiff = mittelpunktX - ziel.mittelpunktX;
+        double yDiff = mittelpunktY - ziel.mittelpunktY;
+        return Math.Sqrt(xDiff * xDiff + yDiff * yDiff);
+    }
+
+    public double Flaeche()
+    {
+        return Math.PI * Radius * Radius;
+    }
+}</code></pre></div>
+
+      <h3>Vererbung im Diagramm</h3>
+      <p>Vererbung ist eine <strong>IS-A-Beziehung</strong> und wird mit einem Pfeil dargestellt, der <strong>von der abgeleiteten Klasse zur Basisklasse</strong> zeigt (klassisch: geschlossene, nicht ausgefüllte Dreiecksspitze). Manchmal wird der Pfeil mit «extends» beschriftet.</p>
+      <div class="umlrow">
+        <div class="uml">
+          <div class="name">Fahrzeug</div>
+          <div class="part"><div># marke : string</div></div>
+          <div class="part"><div>+ Fahren() : void</div></div>
+        </div>
+        <span class="arrow">◁——</span>
+        <div class="uml">
+          <div class="name">Flugzeug</div>
+          <div class="part"><div>- spannweite : double</div></div>
+          <div class="part"><div>+ Fliegen() : void</div></div>
+        </div>
+        <p class="umlnote">Ein Flugzeug <em>ist ein</em> Fahrzeug. Ein Jet oder ein Segelflugzeug <em>ist ein</em> Flugzeug.</p>
+      </div>
+
+      <h3>Assoziationen und Multiplizität</h3>
+      <p>Eine einfache Assoziation zeigt eine Beziehung zwischen zwei Klassen und wird als <strong>Linie</strong> dargestellt. Die <strong>Multiplizität (Kardinalität)</strong> an den Linienenden sagt, wie viele Objekte verbunden sind.</p>
+      <div class="tablewrap">
+      <table>
+        <thead><tr><th>Notation</th><th>Bedeutung</th></tr></thead>
+        <tbody>
+          <tr><td><code>1</code></td><td>genau eins</td></tr>
+          <tr><td><code>0..1</code></td><td>optional eins (keins oder eins)</td></tr>
+          <tr><td><code>*</code></td><td>viele (auch keins)</td></tr>
+          <tr><td><code>1..*</code></td><td>mindestens eins</td></tr>
+          <tr><td><code>2..5</code></td><td>zwischen 2 und 5</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="codewrap"><div class="cap">Lesen einer Assoziation</div><pre><code>Student  1..*  ————  1..*  Lehrperson
+
+Lies von links nach rechts:
+  Ein Student ist mit mindestens einer Lehrperson verbunden.
+Lies von rechts nach links:
+  Eine Lehrperson ist mit mindestens einem Studenten verbunden.
+
+Die Zahl steht IMMER am gegenüberliegenden Ende der Klasse,
+über die man gerade spricht.</code></pre></div>
+      <p>Im Code wird «viele» typischerweise zu einer Liste: <code>public List&lt;Lehrperson&gt; Lehrpersonen { get; set; }</code>; ein <code>0..1</code> wird zu einem nullable Feld: <code>public Employee? Boss { get; set; }</code>.</p>
+
+      <div class="lz">
+        <span class="tag">Lernziele dieses Kapitels</span>
+        <ul>
+          <li><label><input type="checkbox" data-lz="16"><span>Ich kann Beispiele machen, wann UML-Diagramme sinnvoll eingesetzt werden, insbesondere Klassendiagramme.</span></label></li>
+          <li><label><input type="checkbox" data-lz="17"><span>Ich kann ein Klassendiagramm zeichnen – aus natürlicher Sprache oder aus einem Codebeispiel.</span></label></li>
+          <li><label><input type="checkbox" data-lz="18"><span>Ich kann Klassendiagramme in C#-Code implementieren.</span></label></li>
+          <li><label><input type="checkbox" data-lz="19"><span>Ich kenne die Schreibweise von Multiplizität/Kardinalität.</span></label></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ 8 ============ -->
+    <section id="s8">
+      <div class="sec-head"><span class="sec-num">08</span><h2>Vererbung</h2></div>
+
+      <p><strong>Definition:</strong> Vererbung bedeutet, dass eine Klasse die Membervariablen und Methoden einer anderen Klasse übernimmt.</p>
+      <ul>
+        <li><strong>Basisklasse</strong> (in Java auch Superklasse): die Klasse, von der geerbt wird – die <em>Generalisierung</em>.</li>
+        <li><strong>Abgeleitete Klasse</strong>: die Klasse, die erbt und erweitert wird – die <em>Spezialisierung</em>.</li>
+      </ul>
+      <p>Die abgeleitete Klasse kann zusätzliche, spezifischere Attribute und Methoden hinzufügen und bestehende Methoden überschreiben. Es gilt: <strong>eine abgeleitete Klasse kann mindestens alles, was die Basisklasse kann – und oft mehr.</strong></p>
+      <p>Beispiel: <code>Shape</code> ist die Generalisierung, die Gesamtheit aller Formen. <code>Rectangle</code>, <code>Circle</code>, <code>Square</code> sind Spezialisierungen – erst sie bringen die Generalisierung in die Realität. Ebenso ist «Car» verallgemeinert; erst die Spezialisierung macht daraus ein konkretes Auto, z.&nbsp;B. einen BMW i3.</p>
+
+      <h3>Der «ist ein»-Test</h3>
+      <div class="box merk">
+        <span class="tag">Entscheidungsregel</span>
+        <p>Vererbung passt immer dann, wenn du eine <strong>«ist ein»-Beziehung</strong> formulieren kannst – und zwar in nur <em>einer</em> Richtung.<br>
+        ✓ Jeder Manager <em>ist ein</em> Mitarbeiter. Aber nicht jeder Mitarbeiter ist ein Manager. → <code>Manager : Mitarbeiter</code><br>
+        ✗ Ein Motor <em>ist kein</em> Auto – ein Auto <em>hat einen</em> Motor. Bei «hat ein» nimmt man kein Erben, sondern ein Attribut (Komposition).</p>
+      </div>
+
+      <h3>Einfachvererbung und <code>object</code></h3>
+      <ul>
+        <li>In C# und Java kann eine Klasse nur von <strong>genau einer</strong> anderen Klasse erben (Einfachvererbung).</li>
+        <li><strong>Mehrfachvererbung</strong> von mehreren Klassen gleichzeitig ist <strong>nicht erlaubt</strong>.</li>
+        <li>Ohne angegebene Basisklasse erbt jede Klasse automatisch von <code>object</code>, der gemeinsamen Wurzel aller Klassen.</li>
+      </ul>
+
+      <h3>Vererbung in der Anwendung</h3>
+      <div class="codewrap"><div class="cap">C# · Mitarbeiter / Manager</div><pre><code>class Mitarbeiter
+{
+    public string Name { get; set; }
+    public int Alter { get; set; }
+
+    public void Arbeiten()
+    {
+        Console.WriteLine($"{Name} arbeitet.");
+    }
+}
+
+class Manager : Mitarbeiter        // erbt automatisch alles aus Mitarbeiter
+{
+    public string Abteilung { get; set; }
+
+    public void Leiten()
+    {
+        Console.WriteLine($"{Name} leitet die Abteilung {Abteilung}.");
+    }
+}
+
+// Verwendung
+Manager chef = new Manager();
+chef.Name = "Anna";          // geerbtes Property
+chef.Alter = 40;
+chef.Abteilung = "IT";
+
+chef.Arbeiten();             // geerbte Methode  → Anna arbeitet.
+chef.Leiten();               // eigene Methode   → Anna leitet die Abteilung IT.</code></pre></div>
+
+      <h3>Die erste Stolperfalle: <code>new</code> verdeckt nur</h3>
+      <p>Definiert die abgeleitete Klasse eine Methode mit demselben Namen, <strong>verdeckt</strong> sie die Basismethode. In C# muss man das explizit mit <code>new</code> kennzeichnen. Das ist <strong>kein echtes Überschreiben</strong>, sondern nur ein Verstecken – beide Versionen existieren nebeneinander im Speicher.</p>
+      <div class="codewrap"><div class="cap">C# · das Problem mit new</div><pre><code>class Animal
+{
+    public void Speak()
+    {
+        Console.WriteLine("Ein Tier macht ein Geräusch");
+    }
+}
+
+class Dog : Animal
+{
+    public new void Speak()                  // verdeckt, überschreibt nicht
+    {
+        Console.WriteLine("Wuff!");
+    }
+}
+
+Animal a = new Dog();
+a.Speak();      // "Ein Tier macht ein Geräusch"  ← die Referenz entscheidet!
+
+Dog d = new Dog();
+d.Speak();      // "Wuff!"</code></pre></div>
+      <div class="box trap">
+        <span class="tag">Prüfungsfrage-Klassiker</span>
+        <p>Bei <code>new</code> entscheidet der <strong>Typ der Referenz</strong> (die Variable links), welche Methode läuft. Bei <code>virtual</code>/<code>override</code> entscheidet der <strong>tatsächliche Objekttyp</strong> (das <code>new X()</code> rechts). Diese Unterscheidung ist die häufigste „Was gibt der Code aus?“-Aufgabe.</p>
+      </div>
+
+      <div class="lz">
+        <span class="tag">Lernziele dieses Kapitels</span>
+        <ul>
+          <li><label><input type="checkbox" data-lz="20"><span>Ich kann zwischen Basisklassen und abgeleiteten Klassen unterscheiden und das an einem Codebeispiel erklären.</span></label></li>
+          <li><label><input type="checkbox" data-lz="21"><span>Ich kann eine Vererbung als «ist ein»-Beziehung formulieren und argumentieren, wann Vererbung Sinn macht und wann nicht.</span></label></li>
+          <li><label><input type="checkbox" data-lz="22"><span>Ich kann Vererbungen in einem UML-Klassendiagramm abbilden.</span></label></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ 9 ============ -->
+    <section id="s9">
+      <div class="sec-head"><span class="sec-num">09</span><h2>Polymorphie: virtual, override, abstract</h2></div>
+
+      <p><strong>Poly</strong> = viele, <strong>Morph</strong> = Form → Vielgestaltigkeit. Ein Objekt kann in verschiedenen Formen auftreten. Alltagsbild: Ein Mitarbeiter ist auch eine Person – je nach Kontext nutze ich ihn als «Person» (Name, Alter) oder als «Mitarbeiter» (Lohn, Abteilung).</p>
+      <p>Technisch: <strong>Eine Referenz vom Typ der Basisklasse kann auf Objekte abgeleiteter Klassen zeigen</strong>, und der tatsächliche Objekttyp bestimmt das Verhalten. Vorteil: man kann einheitlich mit vielen unterschiedlichen Objekten umgehen, z.&nbsp;B. in Listen und Schleifen.</p>
+      <div class="codewrap"><div class="cap">C# · polymorphe Referenzen</div><pre><code>Animal a1 = new Dog();
+Animal a2 = new Cat();
+
+List&lt;Animal&gt; tiere = new List&lt;Animal&gt; { new Dog(), new Cat(), new Bird() };
+foreach (Animal tier in tiere)
+{
+    tier.MakeNoise();     // jedes Tier antwortet auf seine Art
+}</code></pre></div>
+
+      <h3><code>virtual</code> und <code>override</code></h3>
+      <ul>
+        <li><code>virtual</code> in der <strong>Basisklasse</strong>: diese Methode <em>darf</em> in abgeleiteten Klassen überschrieben werden. Eine Implementierung ist vorhanden.</li>
+        <li><code>override</code> in der <strong>abgeleiteten Klasse</strong>: ersetzt die geerbte Implementierung. Dadurch wird beim polymorphen Aufruf die richtige Implementierung verwendet.</li>
+      </ul>
+      <div class="codewrap"><div class="cap">C# · die Lösung</div><pre><code>class Animal
+{
+    public virtual void Speak()
+    {
+        Console.WriteLine("Ein Tier macht ein Geräusch");
+    }
+}
+
+class Dog : Animal
+{
+    public override void Speak()
+    {
+        Console.WriteLine("Wuff!");
+    }
+}
+
+Animal a = new Dog();
+a.Speak();      // "Wuff!"  ← jetzt entscheidet das Objekt, nicht die Referenz</code></pre></div>
+
+      <h3>Abstrakte Klassen</h3>
+      <p><code>Animal</code> ist kein konkretes Tier – die Klasse steht nur als allgemeiner Bauplan. Ein Animal kann vieles sein: Hund, Katze, Vogel … aber nicht selbst existieren. Wenn eine Klasse <strong>nicht direkt instanziiert werden darf</strong>, sondern nur als Grundlage für andere Klassen dient, macht man sie <code>abstract</code>.</p>
+      <ul>
+        <li>Eine abstrakte Klasse kann <strong>gemeinsame, fertig implementierte</strong> Eigenschaften und Methoden enthalten (wie eine normale Klasse) …</li>
+        <li>… und zusätzlich <strong>abstrakte Methoden</strong>, die von den abgeleiteten Klassen zwingend überschrieben werden müssen.</li>
+        <li>Eine abstrakte Methode hat <strong>keine Implementierung</strong> (kein Rumpf, nur Semikolon) und darf nur in einer abstrakten Klasse stehen.</li>
+        <li>Eine abstrakte Klasse verbietet <code>virtual</code> nicht – sie ändert nur, dass keine direkten Objekte dieser Klasse erstellt werden dürfen.</li>
+      </ul>
+      <div class="codewrap"><div class="cap">C# · abstract</div><pre><code>abstract class Animal
+{
+    public abstract void MakeNoise();      // kein Rumpf → Pflicht zum Überschreiben
+
+    public void DoEat()                    // fertige Methode, gilt für alle
+    {
+        Console.WriteLine("Das Tier frisst.");
+    }
+}
+
+class Dog : Animal
+{
+    public override void MakeNoise()       // MUSS implementiert werden
+    {
+        Console.WriteLine("Wuff!");
+    }
+}
+
+class Cat : Animal
+{
+    public override void MakeNoise()
+    {
+        Console.WriteLine("Miau!");
+    }
+}
+
+// Animal a = new Animal();     // FEHLER: abstrakte Klasse ist nicht instanziierbar
+Animal hund = new Dog();        // erlaubt: Referenz vom abstrakten Typ
+hund.MakeNoise();               // Wuff!
+hund.DoEat();                   // Das Tier frisst.  (geerbt, nicht überschrieben)</code></pre></div>
+      <p><code>Cat</code> und <code>Dog</code> implementieren <code>DoEat()</code> also nicht – für sie gilt dieselbe Implementation wie in <code>Animal</code>.</p>
+      <p>Damit ist erreicht: <code>Animal</code> kann nicht mehr instanziiert werden (es ist nur noch ein Bauplan), und <code>MakeNoise()</code> muss in <code>Animal</code> nicht mehr implementiert werden – keine «???»-Ausgabe mehr, jede Tierklasse weiss selbst, wie sie klingt.</p>
+
+      <div class="box note">
+        <span class="tag">Abstrakte Klasse vs. Interface</span>
+        <p>Eine vollständig abstrakte Klasse ist gleich aufgebaut wie ein <code>interface</code> – beide sind nicht instanziierbar. Interfaces kommen später im Modul; dann wird auch klar, warum sie meistens mehr Sinn machen als abstrakte Klassen.</p>
+      </div>
+
+      <h3>Die grosse Vergleichstabelle</h3>
+      <div class="tablewrap">
+      <table>
+        <thead><tr><th></th><th><code>new</code> (verdecken)</th><th><code>virtual</code> / <code>override</code></th><th><code>abstract</code> / <code>override</code></th></tr></thead>
+        <tbody>
+          <tr><td>Implementierung in der Basisklasse</td><td>ja</td><td>ja</td><td><strong>nein</strong></td></tr>
+          <tr><td>Überschreiben in abgeleiteter Klasse</td><td>nein – nur verdecken</td><td>optional</td><td><strong>Pflicht</strong></td></tr>
+          <tr><td>Basisklasse instanziierbar</td><td>ja</td><td>ja</td><td><strong>nein</strong></td></tr>
+          <tr><td>Aufruf über Basisklassen-Referenz</td><td><strong>Basis</strong>-Methode läuft</td><td><strong>abgeleitete</strong> Methode läuft</td><td><strong>abgeleitete</strong> Methode läuft</td></tr>
+          <tr><td>Aufruf über abgeleitete Referenz</td><td>abgeleitete Methode läuft</td><td>abgeleitete Methode läuft</td><td>abgeleitete Methode läuft</td></tr>
+          <tr><td>Im Speicher</td><td>beide Versionen nebeneinander</td><td>Original wird ersetzt</td><td>es gibt nur die abgeleitete</td></tr>
+        </tbody>
+      </table>
+      </div>
+
+      <div class="box merk">
+        <span class="tag">Merksatz</span>
+        <p><code>new</code> ➔ <strong>verdeckt</strong> die alte Methode (beide existieren).<br>
+        <code>virtual</code> ➔ <strong>kann</strong> überschrieben werden (optional).<br>
+        <code>abstract</code> ➔ <strong>muss</strong> überschrieben werden (Pflicht).</p>
+      </div>
+
+      <div class="lz">
+        <span class="tag">Lernziele dieses Kapitels</span>
+        <ul>
+          <li><label><input type="checkbox" data-lz="23"><span>Ich kenne die Stolperfalle, wenn eine abgeleitete Klasse eine Methode mit <code>new</code> nur verdeckt, und den Unterschied zum Überschreiben mit <code>virtual</code>/<code>override</code>.</span></label></li>
+          <li><label><input type="checkbox" data-lz="24"><span>Ich kenne abstrakte Klassen und abstrakte Methoden und kann sie anwenden.</span></label></li>
+          <li><label><input type="checkbox" data-lz="25"><span>Ich kann Polymorphie an einem Codebeispiel erklären (Liste von Basisklassen-Referenzen).</span></label></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ 10 ============ -->
+    <section id="s10">
+      <div class="sec-head"><span class="sec-num">10</span><h2>Spickzettel</h2></div>
+      <p>Der Rest ist Repetition. Diese zwei Kästen decken erfahrungsgemäss den Grossteil der Punkte ab.</p>
+
+      <div class="cheat">
+        <div class="cheatgrid">
+          <div>
+            <h4>4 Säulen</h4>
+            <ul>
+              <li><strong>K</strong>apselung – Daten + Logik zusammen, Rest verstecken</li>
+              <li><strong>A</strong>bstraktion – Details weg, höhere Bedeutungsebene</li>
+              <li><strong>V</strong>ererbung – bestehenden Typ übernehmen &amp; erweitern</li>
+              <li><strong>P</strong>olymorphie – gleiche Schnittstelle, viele Gestalten</li>
+            </ul>
+          </div>
+          <div>
+            <h4>Sichtbarkeit</h4>
+            <ul>
+              <li><code>public</code> – überall</li>
+              <li><code>private</code> – nur eigene Klasse</li>
+              <li><code>protected</code> – eigene + abgeleitete</li>
+              <li><code>internal</code> – nur eigenes Assembly</li>
+              <li>auf <code>class</code>: nur <code>public</code> / <code>internal</code></li>
+            </ul>
+          </div>
+          <div>
+            <h4>UML</h4>
+            <ul>
+              <li><code>+</code> public · <code>-</code> private · <code>#</code> protected</li>
+              <li><code>attribut : Typ</code></li>
+              <li><code>Methode(p:Typ) : Rückgabe</code></li>
+              <li><em>kursiv</em> = abstrakt</li>
+              <li>Pfeil ▷ zur Basisklasse = Vererbung</li>
+              <li><code>1</code> · <code>0..1</code> · <code>*</code> · <code>1..*</code></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Überschreiben</h4>
+            <ul>
+              <li><code>new</code> = verdecken → Referenztyp entscheidet</li>
+              <li><code>virtual</code>+<code>override</code> = ersetzen → Objekttyp entscheidet</li>
+              <li><code>abstract</code>+<code>override</code> = Pflicht, kein Rumpf in der Basis</li>
+              <li>abstrakte Klasse: nicht instanziierbar</li>
+            </ul>
+          </div>
+          <div>
+            <h4>Properties</h4>
+            <ul>
+              <li><code>{ get; set; }</code> frei</li>
+              <li><code>{ get; }</code> nur Konstruktor</li>
+              <li><code>{ get; init; }</code> nur Initialisierung</li>
+              <li><code>{ get; private set; }</code> nur intern</li>
+              <li>Field <code>_camelCase</code>, Property <code>PascalCase</code></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Namen</h4>
+            <ul>
+              <li>Klasse / Methode / Property → <code>PascalCase</code></li>
+              <li>Instanz / Parameter / lokal → <code>camelCase</code></li>
+              <li>privates Field → <code>_camelCase</code></li>
+              <li>Interface → <code>IName</code></li>
+              <li>Datei = Klassenname</li>
+            </ul>
+          </div>
+          <div>
+            <h4>Syntax-Schnipsel</h4>
+            <ul>
+              <li><code>List&lt;int&gt; l = new List&lt;int&gt;();</code> · <code>l.Count</code></li>
+              <li><code>int? x = null;</code> · <code>obj?.M()</code> · <code>x ?? 0</code></li>
+              <li><code>: base(...)</code> Basiskonstruktor</li>
+              <li><code>: this(...)</code> eigener Konstruktor</li>
+              <li><code>Klasse.Methode()</code> bei <code>static</code></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Faustregeln</h4>
+            <ul>
+              <li>«ist ein» → Vererbung; «hat ein» → Attribut</li>
+              <li>Signatur = Name + Parameter (nicht Rückgabetyp)</li>
+              <li>Konstruktor: Klassenname, kein Rückgabetyp</li>
+              <li>Eigener Konstruktor → Default verschwindet</li>
+              <li><code>static</code> sieht nur <code>static</code></li>
+              <li>Jede Klasse erbt von <code>object</code></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="box trap">
+        <span class="tag">Rahmenbedingungen</span>
+        <p>Prüfung auf <strong>Papier</strong>, <strong>keine Hilfsmittel</strong> (kein Taschenrechner, keine digitalen Geräte, keine Kopfhörer, nichts zum Nachschlagen). Heisst konkret: UML von Hand zeichnen und C#-Code von Hand schreiben können – Syntax also wirklich im Kopf haben. Bei Abwesenheit/Krankheit wird die Prüfung an einem separaten Termin nach der Schule nachgeholt und kann schwieriger sein sowie neuen Stoff enthalten.</p>
+      </div>
+    </section>
+
+    <!-- ============ 11 ============ -->
+    <section id="s11">
+      <div class="sec-head"><span class="sec-num">11</span><h2>Übungen mit Lösungen</h2></div>
+      <p>Erst selbst auf Papier lösen, dann aufklappen. Aufgaben 2, 4, 6 und 9 sind die Typen, die erfahrungsgemäss am meisten Punkte bringen.</p>
+
+      <div class="ex">
+        <h4><span class="num">01</span>Vier Säulen</h4>
+        <p>Zähle die vier Säulen der OOP auf (deutsch und englisch) und erkläre jede in einem Satz.</p>
+        <details><summary>Lösung</summary>
+          <ul>
+            <li><strong>Kapselung / Encapsulation:</strong> Daten und die dazugehörige Logik werden in einer Klasse zusammengefasst; nach aussen wird nur eine ausgewählte Schnittstelle sichtbar, der Rest ist versteckt.</li>
+            <li><strong>Abstraktion / Abstraction:</strong> Das Objekt versteckt Details und bietet Operationen auf einer höheren Bedeutungsebene an, wodurch Komplexität beherrschbar wird.</li>
+            <li><strong>Vererbung / Inheritance:</strong> Eine neue Klasse übernimmt Attribute und Methoden einer bestehenden Klasse und erweitert oder verändert sie.</li>
+            <li><strong>Polymorphie / Polymorphism:</strong> Typen mit gemeinsamer Basis können unterschiedliches Verhalten definieren und sind dadurch austauschbar; der tatsächliche Objekttyp bestimmt, welche Implementierung läuft.</li>
+          </ul>
+        </details>
+      </div>
+
+      <div class="ex">
+        <h4><span class="num">02</span>Was gibt der Code aus?</h4>
+        <div class="codewrap"><pre><code>class Fahrzeug
+{
+    public void Hupen() { Console.WriteLine("Töff töff"); }
+    public virtual void Start() { Console.WriteLine("Fahrzeug startet"); }
+}
+
+class Auto : Fahrzeug
+{
+    public new void Hupen() { Console.WriteLine("Beep!"); }
+    public override void Start() { Console.WriteLine("Auto startet"); }
+}
+
+Fahrzeug f = new Auto();
+Auto a = new Auto();
+
+f.Hupen();
+f.Start();
+a.Hupen();
+a.Start();</code></pre></div>
+        <details><summary>Lösung</summary>
+          <div class="codewrap"><pre><code>Töff töff        // new → Referenztyp Fahrzeug entscheidet
+Auto startet     // override → Objekttyp Auto entscheidet
+Beep!            // Referenztyp Auto
+Auto startet     // override</code></pre></div>
+          <p>Merke: Nur bei <code>virtual</code>/<code>override</code> (und <code>abstract</code>/<code>override</code>) entscheidet das Objekt. Bei <code>new</code> entscheidet die Variable.</p>
+        </details>
+      </div>
+
+      <div class="ex">
+        <h4><span class="num">03</span>Klasse vs. Objekt</h4>
+        <p>Erkläre den Unterschied zwischen Klasse und Objekt und zeige ihn an einem kurzen C#-Beispiel.</p>
+        <details><summary>Lösung</summary>
+          <p>Die Klasse ist der Bauplan und existiert einmal im Quellcode; das Objekt ist ein konkretes Exemplar, das mit <code>new</code> zur Laufzeit im RAM entsteht und eigene Attributwerte besitzt. Aus einer Klasse können beliebig viele Objekte erzeugt werden.</p>
+          <div class="codewrap"><pre><code>class Rechteck                    // Bauplan
+{
+    public int Breite { get; set; }
+    public int Laenge { get; set; }
+}
+
+Rechteck r1 = new Rechteck { Breite = 3, Laenge = 5 };   // Objekt 1
+Rechteck r2 = new Rechteck { Breite = 4, Laenge = 6 };   // Objekt 2
+// gleiche Klasse, unterschiedliche Werte und Speicheradressen</code></pre></div>
+        </details>
+      </div>
+
+      <div class="ex">
+        <h4><span class="num">04</span>Vom Text zum Klassendiagramm</h4>
+        <p>„Eine Bibliothek verwaltet Bücher. Jedes Buch hat einen Titel und eine ISBN und kann ausgeliehen werden. Ein Fachbuch ist ein Buch und hat zusätzlich ein Fachgebiet. Eine Bibliothek enthält beliebig viele Bücher; ein Buch gehört zu genau einer Bibliothek.“ Zeichne das Klassendiagramm.</p>
+        <details><summary>Lösung</summary>
+          <div class="umlrow">
+            <div class="uml">
+              <div class="name">Bibliothek</div>
+              <div class="part"><div>- name : string</div></div>
+              <div class="part"><div>+ Bibliothek(name:string)</div><div>+ BuchHinzufuegen(b:Buch) : void</div></div>
+            </div>
+            <span class="arrow">1 —— *</span>
+            <div class="uml">
+              <div class="name">Buch</div>
+              <div class="part"><div>- titel : string</div><div>- isbn : string</div><div># ausgeliehen : bool</div></div>
+              <div class="part"><div>+ Buch(titel:string, isbn:string)</div><div>+ Ausleihen() : void</div></div>
+            </div>
+          </div>
+          <div class="umlrow">
+            <div class="uml">
+              <div class="name">Fachbuch</div>
+              <div class="part"><div>- fachgebiet : string</div></div>
+              <div class="part"><div>+ Fachbuch(titel:string, isbn:string, fachgebiet:string)</div></div>
+            </div>
+            <p class="umlnote">Vererbungspfeil von <strong>Fachbuch</strong> nach <strong>Buch</strong> (Fachbuch <em>ist ein</em> Buch).<br>Assoziation Bibliothek <code>1</code> —— <code>*</code> Buch.</p>
+          </div>
+        </details>
+      </div>
+
+      <div class="ex">
+        <h4><span class="num">05</span>Vom Diagramm zum Code</h4>
+        <div class="umlrow">
+          <div class="uml">
+            <div class="name">Konto</div>
+            <div class="part"><div>- saldo : double</div><div>+ Iban : string</div></div>
+            <div class="part"><div>+ Konto(iban:string)</div><div>+ Konto(iban:string, start:double)</div><div>+ Einzahlen(betrag:double) : void</div><div>+ GetSaldo() : double</div></div>
+          </div>
+        </div>
+        <p>Implementiere diese Klasse in C#. Der zweite Konstruktor soll den ersten wiederverwenden.</p>
+        <details><summary>Lösung</summary>
+          <div class="codewrap"><pre><code>public class Konto
+{
+    private double _saldo;
+    public string Iban { get; set; }
+
+    public Konto(string iban)
+        : this(iban, 0.0)               // ruft den anderen Konstruktor auf
+    { }
+
+    public Konto(string iban, double start)
+    {
+        Iban = iban;
+        _saldo = start;
+    }
+
+    public void Einzahlen(double betrag)
+    {
+        if (betrag &gt; 0)
+        {
+            _saldo += betrag;
+        }
+    }
+
+    public double GetSaldo()
+    {
+        return _saldo;
+    }
+}</code></pre></div>
+        </details>
+      </div>
+
+      <div class="ex">
+        <h4><span class="num">06</span>Finde die vier Fehler</h4>
+        <div class="codewrap"><pre><code>class Zaehler
+{
+    private int _stand;
+
+    public static void Erhoehen()
+    {
+        _stand++;
+    }
+
+    public void Zaehler()
+    {
+        _stand = 0;
+    }
+}
+
+Zaehler z = new Zaehler();
+z.Erhoehen();</code></pre></div>
+        <details><summary>Lösung</summary>
+          <ol>
+            <li><code>Erhoehen()</code> ist <code>static</code>, greift aber auf die Instanzvariable <code>_stand</code> zu – statische Methoden sehen nur statische Member.</li>
+            <li>Der Konstruktor <code>public void Zaehler()</code> hat einen Rückgabetyp. Ein Konstruktor hat <strong>keinen</strong> – mit <code>void</code> ist das eine ganz normale Methode, die zufällig wie die Klasse heisst.</li>
+            <li><code>z.Erhoehen()</code> ruft eine statische Methode über ein Objekt auf – statische Methoden werden über den Klassennamen aufgerufen: <code>Zaehler.Erhoehen()</code>.</li>
+            <li>Sinnfehler: Ohne echten Konstruktor wird <code>_stand</code> nie bewusst initialisiert (C# setzt es zwar auf 0, die Absicht fehlt aber).</li>
+          </ol>
+          <div class="codewrap"><div class="cap">Korrigiert</div><pre><code>class Zaehler
+{
+    private int _stand;
+
+    public Zaehler()          // Konstruktor: kein Rückgabetyp
+    {
+        _stand = 0;
+    }
+
+    public void Erhoehen()    // nicht static → darf auf _stand zugreifen
+    {
+        _stand++;
+    }
+}
+
+Zaehler z = new Zaehler();
+z.Erhoehen();</code></pre></div>
+        </details>
+      </div>
+
+      <div class="ex">
+        <h4><span class="num">07</span>Sichtbarkeiten</h4>
+        <p>Welche Zeilen kompilieren nicht und warum?</p>
+        <div class="codewrap"><pre><code>public class Basis
+{
+    public int A;
+    private int B;
+    protected int C;
+    internal int D;
+}
+
+public class Abgeleitet : Basis
+{
+    public void Test()
+    {
+        A = 1;
+        B = 2;
+        C = 3;
+        D = 4;
+    }
+}
+
+// in einer fremden Klasse, gleiches Projekt:
+Basis b = new Basis();
+b.A = 1;
+b.C = 3;</code></pre></div>
+        <details><summary>Lösung</summary>
+          <ul>
+            <li><code>B = 2;</code> → <strong>Fehler.</strong> <code>private</code> ist nur in <code>Basis</code> selbst sichtbar, nicht in abgeleiteten Klassen.</li>
+            <li><code>b.C = 3;</code> → <strong>Fehler.</strong> <code>protected</code> ist nur in der eigenen und in abgeleiteten Klassen sichtbar, nicht von aussen über eine Instanz.</li>
+            <li><code>A</code>, <code>C</code> (innerhalb von <code>Abgeleitet</code>), <code>D</code> und <code>b.A</code> sind in Ordnung – <code>internal</code> verhält sich im gleichen Projekt wie <code>public</code>.</li>
+          </ul>
+        </details>
+      </div>
+
+      <div class="ex">
+        <h4><span class="num">08</span>Properties richtig wählen</h4>
+        <p>Eine Klasse <code>Mitarbeiter</code> braucht: eine Personalnummer, die nach der Erstellung nie mehr ändern darf; ein Gehalt, das sich nur über die Methode <code>Befoerdern()</code> ändern darf; eine E-Mail-Adresse, die frei änderbar ist. Schreibe die drei Properties.</p>
+        <details><summary>Lösung</summary>
+          <div class="codewrap"><pre><code>public class Mitarbeiter
+{
+    public string Personalnummer { get; init; }    // nur bei Initialisierung
+    public double Gehalt { get; private set; }     // nur intern änderbar
+    public string Email { get; set; }              // frei änderbar
+
+    public void Befoerdern(double zuschlag)
+    {
+        Gehalt += zuschlag;
+    }
+}</code></pre></div>
+          <p>Alternativ für die Personalnummer: <code>{ get; }</code> mit Zuweisung im Konstruktor.</p>
+        </details>
+      </div>
+
+      <div class="ex">
+        <h4><span class="num">09</span>Vererbung – ja oder nein?</h4>
+        <p>Entscheide mit dem «ist ein»-Test und begründe kurz:</p>
+        <ol>
+          <li><code>Quadrat</code> – <code>Rechteck</code></li>
+          <li><code>Motor</code> – <code>Auto</code></li>
+          <li><code>Lehrperson</code> – <code>Person</code></li>
+          <li><code>Adresse</code> – <code>Kunde</code></li>
+          <li><code>Sparkonto</code> – <code>Konto</code></li>
+        </ol>
+        <details><summary>Lösung</summary>
+          <ol>
+            <li><strong>Ja.</strong> Ein Quadrat ist ein Rechteck → <code>class Quadrat : Rechteck</code>.</li>
+            <li><strong>Nein.</strong> Ein Motor ist kein Auto – ein Auto <em>hat einen</em> Motor → Attribut <code>public Motor Motor { get; set; }</code>.</li>
+            <li><strong>Ja.</strong> Eine Lehrperson ist eine Person.</li>
+            <li><strong>Nein.</strong> Eine Adresse ist kein Kunde – ein Kunde <em>hat eine</em> Adresse → Attribut.</li>
+            <li><strong>Ja.</strong> Ein Sparkonto ist ein Konto.</li>
+          </ol>
+          <p>Faustregel: «ist ein» → Vererbung. «hat ein» → Attribut (Komposition).</p>
+        </details>
+      </div>
+
+      <div class="ex">
+        <h4><span class="num">10</span>Abstrakte Klasse schreiben</h4>
+        <p>Schreibe eine abstrakte Klasse <code>Form</code> mit einer abstrakten Methode <code>Flaeche()</code> (gibt <code>double</code> zurück) und einer fertigen Methode <code>Beschreibe()</code>, die den Klassennamen und die Fläche ausgibt. Leite <code>Kreis</code> und <code>Quadrat</code> ab und gib in einer Liste alle Flächen aus.</p>
+        <details><summary>Lösung</summary>
+          <div class="codewrap"><pre><code>abstract class Form
+{
+    public abstract double Flaeche();          // keine Implementierung
+
+    public void Beschreibe()                   // für alle Formen gleich
+    {
+        Console.WriteLine($"{GetType().Name}: {Flaeche():F2}");
+    }
+}
+
+class Kreis : Form
+{
+    public double Radius { get; init; }
+
+    public Kreis(double radius)
+    {
+        Radius = radius;
+    }
+
+    public override double Flaeche()
+    {
+        return Math.PI * Radius * Radius;
+    }
+}
+
+class Quadrat : Form
+{
+    public double Seite { get; init; }
+
+    public Quadrat(double seite)
+    {
+        Seite = seite;
+    }
+
+    public override double Flaeche()
+    {
+        return Seite * Seite;
+    }
+}
+
+List&lt;Form&gt; formen = new List&lt;Form&gt; { new Kreis(2), new Quadrat(3) };
+foreach (Form f in formen)
+{
+    f.Beschreibe();       // Kreis: 12.57 / Quadrat: 9.00
+}</code></pre></div>
+          <p>Das ist Polymorphie im Einsatz: die Liste kennt nur <code>Form</code>, ausgeführt wird jeweils die konkrete Implementierung.</p>
+        </details>
+      </div>
+
+      <div class="ex">
+        <h4><span class="num">11</span>Nullable und Listen</h4>
+        <p>Was ist an diesem Code falsch bzw. gefährlich? Korrigiere ihn.</p>
+        <div class="codewrap"><pre><code>List&lt;string&gt; namen = new List&lt;string&gt;();
+string gesucht = namen.Find(n =&gt; n == "Anna");
+Console.WriteLine(gesucht.Length);
+Console.WriteLine(namen.Length);</code></pre></div>
+        <details><summary>Lösung</summary>
+          <ul>
+            <li><code>Find</code> liefert <code>null</code>, wenn nichts gefunden wird → <code>gesucht.Length</code> wirft eine <code>NullReferenceException</code>. Der Typ muss <code>string?</code> sein und vor dem Zugriff geprüft werden.</li>
+            <li>Eine Liste hat <code>.Count</code>, nicht <code>.Length</code>.</li>
+          </ul>
+          <div class="codewrap"><div class="cap">Korrigiert</div><pre><code>List&lt;string&gt; namen = new List&lt;string&gt;();
+string? gesucht = namen.Find(n =&gt; n == "Anna");
+
+if (gesucht != null)
+{
+    Console.WriteLine(gesucht.Length);
+}
+Console.WriteLine(gesucht?.Length ?? 0);   // Kurzform
+Console.WriteLine(namen.Count);</code></pre></div>
+        </details>
+      </div>
+
+      <div class="ex">
+        <h4><span class="num">12</span>Signatur, Rumpf, Rückgabewert</h4>
+        <p>Benenne in <code>public bool IstVolljaehrig(int alter) { return alter &gt;= 18; }</code> die Sichtbarkeit, den Rückgabetyp, die Signatur und den Rumpf. Wie schreibst du eine Variante, die nichts zurückgibt, sondern das Resultat direkt ausgibt?</p>
+        <details><summary>Lösung</summary>
+          <ul>
+            <li>Sichtbarkeit: <code>public</code></li>
+            <li>Rückgabetyp: <code>bool</code> – steht direkt vor dem Methodennamen</li>
+            <li>Signatur: <code>IstVolljaehrig(int alter)</code> – Name + Parameterliste</li>
+            <li>Rumpf: <code>{ return alter &gt;= 18; }</code></li>
+          </ul>
+          <div class="codewrap"><pre><code>public void ZeigeVolljaehrig(int alter)
+{
+    Console.WriteLine(alter &gt;= 18 ? "volljährig" : "minderjährig");
+}</code></pre></div>
+          <p>Beide dürfen gleichzeitig existieren, weil sich die <em>Namen</em> unterscheiden. Zwei Methoden, die sich <strong>nur</strong> im Rückgabetyp unterscheiden, wären dagegen nicht erlaubt.</p>
+        </details>
+      </div>
+
+    </section>
+
+    <!-- ============ 12 ============ -->
+    <section id="s12">
+      <div class="sec-head"><span class="sec-num">12</span><h2>Vertiefungsaufgaben mit Musterlösungen</h2></div>
+      <p>Die sieben Vertiefungsaufgaben aus dem Modul-Repository. Sie decken fast genau die Lernziele ab – wer diese sieben von Hand schreiben kann, ist durch. Die Zahlenwerte bei Aufgabe 01 sind gegen die Soll-Ausgabe gerechnet und stimmen auf die letzte Stelle.</p>
+
+      <div class="ex">
+        <h4><span class="num">V01</span>Cylinder – Attribute, Methoden, <code>static</code></h4>
+        <p>Klasse <code>Cylinder</code> mit lesbaren und beschreibbaren Attributen <code>Radius</code> und <code>Height</code>, sechs Berechnungsmethoden und einer <strong>überladenen statischen</strong> <code>GetSurfaceArea(double, double)</code>.</p>
+        <details><summary>Lösung</summary>
+          <div class="codewrap"><div class="cap">Cylinder.cs</div><pre><code>public class Cylinder
+{
+    public double Radius { get; set; }
+    public double Height { get; set; }
+
+    public Cylinder()                              // Default-Konstruktor: nötig für new Cylinder()
+    {
+    }
+
+    public Cylinder(double radius, double height)  // überladen
+    {
+        Radius = radius;
+        Height = height;
+    }
+
+    public double GetDiameter()                    // d = 2r
+    {
+        return 2 * Radius;
+    }
+
+    public double GetCircumference()               // U = 2*pi*r
+    {
+        return 2 * Math.PI * Radius;
+    }
+
+    public double GetBaseArea()                    // G = pi*r^2
+    {
+        return Math.PI * Radius * Radius;
+    }
+
+    public double GetLateralArea()                 // M = 2*pi*r*h
+    {
+        return 2 * Math.PI * Radius * Height;
+    }
+
+    public double GetVolume()                      // V = G * h
+    {
+        return GetBaseArea() * Height;
+    }
+
+    public double GetSurfaceArea()                 // O = 2G + M
+    {
+        return 2 * GetBaseArea() + GetLateralArea();
+    }
+
+    // Statische Überladung: kein Objekt nötig, deshalb auch kein Zugriff
+    // auf Radius/Height - alle Werte kommen über die Parameter herein.
+    public static double GetSurfaceArea(double radius, double height)
+    {
+        return 2 * Math.PI * radius * radius + 2 * Math.PI * radius * height;
+    }
+}</code></pre></div>
+          <div class="box note">
+            <span class="tag">Worauf es hier ankommt</span>
+            <p><strong>1.</strong> Sobald du den Konstruktor mit zwei Parametern schreibst, verschwindet der automatische Default-Konstruktor – <code>new Cylinder()</code> kompiliert dann nicht mehr. Deshalb muss der parameterlose Konstruktor explizit dastehen.<br>
+            <strong>2.</strong> Die Instanzmethode <code>GetSurfaceArea()</code> und die statische <code>GetSurfaceArea(double, double)</code> haben unterschiedliche Parameterlisten – also unterschiedliche Signaturen – und dürfen gleichzeitig existieren.<br>
+            <strong>3.</strong> Die statische Methode kann <em>nicht</em> <code>GetBaseArea()</code> aufrufen, weil das eine Instanzmethode ist. Deshalb steht dort die ganze Formel.</p>
+          </div>
+        </details>
+      </div>
+
+      <div class="ex">
+        <h4><span class="num">V02</span>Sichtbarkeiten – Getter und Setter</h4>
+        <p>Attribute auf <code>private</code> umstellen, nach Konvention in <code>_radius</code> / <code>_height</code> umbenennen und über Methoden zugänglich machen. Zusatzfrage: Welche C#-Kurzform würdest du empfehlen?</p>
+        <details><summary>Lösung</summary>
+          <div class="codewrap"><div class="cap">Klassischer Getter/Setter-Weg (wie in Java)</div><pre><code>public class Cylinder
+{
+    private double _radius;
+    private double _height;
+
+    public void SetRadius(double radius)
+    {
+        if (radius &gt; 0) _radius = radius;      // Validierung ist jetzt möglich!
+    }
+
+    public double GetRadius()
+    {
+        return _radius;
+    }
+
+    public void SetHeight(double height)
+    {
+        if (height &gt; 0) _height = height;
+    }
+
+    public double GetHeight()
+    {
+        return _height;
+    }
+}</code></pre></div>
+          <p><strong>Antwort auf die Zusatzaufgabe:</strong> In C# nimmt man dafür <strong>Auto-Properties</strong> – <code>public double Radius { get; set; }</code>. Sie erledigen Getter und Setter in einer Zeile, der Compiler legt das versteckte Backing Field selbst an, und der Aufruf bleibt lesbar (<code>c1.Radius = 5.25;</code> statt <code>c1.SetRadius(5.25);</code>).</p>
+          <div class="codewrap"><div class="cap">Empfohlene Kurzform (drei Varianten je nach Anforderung)</div><pre><code>public class Cylinder
+{
+    public double Radius { get; set; }          // frei lesen und schreiben
+    public double Height { get; set; }
+}
+
+// Wenn der Wert nur intern geändert werden darf:
+//   public double Height { get; private set; }
+// Wenn er nach der Erstellung unveränderlich sein soll:
+//   public double Height { get; init; }</code></pre></div>
+          <div class="box trap">
+            <span class="tag">Aber Achtung</span>
+            <p>Eine reine Auto-Property <code>{ get; set; }</code> kann <strong>nicht</strong> validieren. Sobald du eine Prüfung brauchst (Radius &gt; 0), nimmst du die Langform mit Backing Field: <code>set { if (value &gt; 0) _radius = value; }</code>.</p>
+          </div>
+        </details>
+      </div>
+
+      <div class="ex">
+        <h4><span class="num">V03</span>Cuboid – unveränderliche Attribute und Geometrie</h4>
+        <p>Klasse <code>Cuboid</code> mit <code>Length</code>, <code>Width</code>, <code>Height</code>, die zur Laufzeit nicht geändert werden dürfen. Dazu die drei Zylinder-Methoden: passenden Quader <em>um</em> den Zylinder, passenden Quader <em>in</em> den Zylinder, und eine Prüfung, ob ein gegebener Quader hineinpasst.</p>
+        <details><summary>Lösung</summary>
+          <div class="codewrap"><div class="cap">Cuboid.cs</div><pre><code>public class Cuboid
+{
+    // { get; init; } = nur bei der Erstellung setzbar -> zur Laufzeit unveränderlich
+    public double Length { get; init; }
+    public double Width { get; init; }
+    public double Height { get; init; }
+
+    public Cuboid(double length, double width, double height)
+    {
+        Length = length;
+        Width = width;
+        Height = height;
+    }
+
+    public double GetBaseArea()        // Bodenfläche
+    {
+        return Length * Width;
+    }
+
+    public double GetVolume()          // V = l * b * h
+    {
+        return GetBaseArea() * Height;
+    }
+
+    public double GetSurfaceArea()     // O = 2*(lb + lh + bh)
+    {
+        return 2 * (Length * Width + Length * Height + Width * Height);
+    }
+
+    public double GetDiagonal()        // Raumdiagonale = Wurzel(l^2 + b^2 + h^2)
+    {
+        return Math.Sqrt(Length * Length + Width * Width + Height * Height);
+    }
+}</code></pre></div>
+          <div class="codewrap"><div class="cap">Ergänzungen in Cylinder.cs</div><pre><code>// 1) Kleinster Quader, in den DIESER Zylinder genau hineinpasst:
+//    Grundfläche = Quadrat mit Seitenlänge = Durchmesser, Höhe = Zylinderhöhe.
+public Cuboid CreateEnclosingCuboid()
+{
+    double side = GetDiameter();
+    return new Cuboid(side, side, Height);
+}
+
+// 2) Grösster Quader (quadratische Grundfläche), der IN diesen Zylinder passt:
+//    Die Grundflächen-Diagonale darf höchstens dem Durchmesser entsprechen.
+//    Bei einem Quadrat gilt: Diagonale = Seite * Wurzel(2)  ->  Seite = d / Wurzel(2)
+public double GetFittingCuboidSide()
+{
+    return GetDiameter() / Math.Sqrt(2);
+}
+
+public double GetFittingCuboidHeight()
+{
+    return Height;
+}
+
+// 3) Passt ein gegebener Quader in diesen Zylinder?
+//    Bedingung A: Quaderhöhe darf die Zylinderhöhe nicht überschreiten.
+//    Bedingung B: die Grundflächen-Diagonale muss in den Durchmesser passen.
+public bool Fits(Cuboid cuboid)
+{
+    double baseDiagonal = Math.Sqrt(
+        cuboid.Length * cuboid.Length + cuboid.Width * cuboid.Width);
+
+    return cuboid.Height &lt;= Height &amp;&amp; baseDiagonal &lt;= GetDiameter();
+}</code></pre></div>
+          <div class="codewrap"><div class="cap">Program.cs – Ergänzung</div><pre><code>Cylinder c1 = new Cylinder(5.25, 20.5);
+Cuboid test = new Cuboid(8.0, 8.0, 19.0);
+
+if (c1.Fits(test))
+{
+    Console.WriteLine("Der Quader passt in den Zylinder.");
+}
+else
+{
+    Console.WriteLine("Der Quader passt NICHT. Passender Quader:");
+    double side = c1.GetFittingCuboidSide();
+    Cuboid passend = new Cuboid(side, side, c1.GetFittingCuboidHeight());
+    Console.WriteLine($"length = {passend.Length}");
+    Console.WriteLine($"width  = {passend.Width}");
+    Console.WriteLine($"height = {passend.Height}");
+}</code></pre></div>
+          <div class="box merk">
+            <span class="tag">Die Geometrie in einem Satz</span>
+            <p>Von oben betrachtet ist die Frage immer: passt das <strong>Quadrat in den Kreis</strong> (Diagonale ≤ Durchmesser) oder der <strong>Kreis ins Quadrat</strong> (Seite = Durchmesser)? Die Höhe wird getrennt davon einfach 1:1 verglichen.</p>
+          </div>
+        </details>
+      </div>
+
+      <div class="ex">
+        <h4><span class="num">V04</span>Car – Konstruktoren, Überladung, <code>this(...)</code></h4>
+        <details><summary>Lösung</summary>
+          <div class="codewrap"><div class="cap">Car.cs</div><pre><code>public class Car
+{
+    public string Brand { get; set; }
+    public string Model { get; set; }
+    public int Year { get; set; }
+
+    // Teil 1: ohne eigenen Konstruktor würde der Compiler diesen erzeugen.
+    // Sobald wir unten eigene schreiben, müssen wir ihn selbst hinschreiben.
+    public Car()
+    {
+    }
+
+    // Teil 2: eigener Konstruktor
+    public Car(string brand, string model, int year)
+    {
+        Brand = brand;
+        Model = model;
+        Year = year;
+    }
+
+    // Teil 3: Überladung - Baujahr automatisch auf das aktuelle Jahr
+    public Car(string brand, string model)
+        : this(brand, model, DateTime.Now.Year)
+    {
+    }
+
+    // Teil 4: nur die Marke - Kette über this(...)
+    public Car(string brand)
+        : this(brand, "Unbekannt")
+    {
+    }
+}</code></pre></div>
+          <div class="codewrap"><div class="cap">Program.cs</div><pre><code>Car c1 = new Car();
+Console.WriteLine($"{c1.Brand} / {c1.Model} / {c1.Year}");
+// Ausgabe:  /  / 0
+// Brand und Model sind null (Referenztypen), Year ist 0 (Werttyp).
+
+Car c2 = new Car("VW", "Golf", 2018);
+Console.WriteLine($"{c2.Brand} / {c2.Model} / {c2.Year}");   // VW / Golf / 2018
+
+Car c3 = new Car("Tesla");
+Console.WriteLine($"{c3.Brand} / {c3.Model} / {c3.Year}");   // Tesla / Unbekannt / 2026</code></pre></div>
+          <div class="box merk">
+            <span class="tag">Konstruktor-Kette</span>
+            <p><code>new Car("Tesla")</code> ruft <code>Car(string)</code> auf → dieser ruft über <code>: this(brand, "Unbekannt")</code> den Zweier-Konstruktor auf → dieser ruft über <code>: this(brand, model, DateTime.Now.Year)</code> den Hauptkonstruktor auf. Die Zuweisungen stehen nur <strong>einmal</strong> im Code – genau das ist der Sinn von <code>this(...)</code>.</p>
+          </div>
+        </details>
+      </div>
+
+      <div class="ex">
+        <h4><span class="num">V05</span>UML in beide Richtungen</h4>
+        <p><strong>a)</strong> Klassendiagramm aus dem eigenen Projekt zeichnen (<code>Program</code>, <code>Cylinder</code>, <code>Cuboid</code>). <strong>b)</strong> Das gegebene Diagramm mit <code>Animal</code>, <code>Human</code>, <code>Music</code>, <code>Artist</code> in C# implementieren.</p>
+        <details><summary>Lösung a) – so sieht das Diagramm aus</summary>
+          <div class="umlrow">
+            <div class="uml">
+              <div class="name">Program</div>
+              <div class="part"><div>—</div></div>
+              <div class="part"><div>+ Main() : void</div></div>
+            </div>
+            <div class="uml">
+              <div class="name">Cylinder</div>
+              <div class="part"><div>+ Radius : double</div><div>+ Height : double</div></div>
+              <div class="part">
+                <div>+ Cylinder()</div>
+                <div>+ Cylinder(radius:double, height:double)</div>
+                <div>+ GetDiameter() : double</div>
+                <div>+ GetBaseArea() : double</div>
+                <div>+ GetVolume() : double</div>
+                <div>+ GetCircumference() : double</div>
+                <div>+ GetLateralArea() : double</div>
+                <div>+ GetSurfaceArea() : double</div>
+                <div>+ GetSurfaceArea(radius:double, height:double) : double {static}</div>
+                <div>+ CreateEnclosingCuboid() : Cuboid</div>
+                <div>+ Fits(cuboid:Cuboid) : bool</div>
+              </div>
+            </div>
+            <div class="uml">
+              <div class="name">Cuboid</div>
+              <div class="part"><div>+ Length : double</div><div>+ Width : double</div><div>+ Height : double</div></div>
+              <div class="part">
+                <div>+ Cuboid(length:double, width:double, height:double)</div>
+                <div>+ GetBaseArea() : double</div>
+                <div>+ GetVolume() : double</div>
+                <div>+ GetSurfaceArea() : double</div>
+                <div>+ GetDiagonal() : double</div>
+              </div>
+            </div>
+          </div>
+          <p>Beziehungen: <code>Program</code> —— <code>Cylinder</code> und <code>Program</code> —— <code>Cuboid</code> (einfache Assoziation, <code>Program</code> verwendet beide). Zwischen <code>Cylinder</code> und <code>Cuboid</code> ebenfalls eine Assoziation mit <code>0..*</code> auf der Cuboid-Seite, weil <code>Cylinder</code> Quader erzeugt und prüft. <strong>Kein Vererbungspfeil</strong> – ein Zylinder ist kein Quader. Statische Member werden in UML unterstrichen oder mit <code>{static}</code> markiert.</p>
+        </details>
+        <details><summary>Lösung b) – Diagramm zu C#</summary>
+          <div class="codewrap"><div class="cap">Animal.cs / Artist.cs</div><pre><code>public class Animal
+{
+    private string _species;
+
+    public Animal(string species)
+    {
+        _species = species;
+    }
+
+    public void MakeSound()
+    {
+        Console.WriteLine($"Das Tier ({_species}) macht ein Geräusch.");
+    }
+}
+
+public class Artist
+{
+    private string _name;
+
+    public Artist(string name)
+    {
+        _name = name;
+    }
+
+    public string GetName()      // sonst käme man nie an den Namen heran
+    {
+        return _name;
+    }
+}</code></pre></div>
+          <div class="codewrap"><div class="cap">Music.cs</div><pre><code>public class Music
+{
+    private string _genre;
+    private Artist _artist;      // Assoziation: genau ein Artist
+    public int Tempo { get; set; }
+
+    public Music(string genre, Artist artist, int tempo)
+    {
+        _genre = genre;
+        _artist = artist;
+        Tempo = tempo;
+    }
+
+    public void Play()
+    {
+        Console.WriteLine($"{_genre} von {_artist.GetName()} bei {Tempo} bpm läuft.");
+    }
+}</code></pre></div>
+          <div class="codewrap"><div class="cap">Human.cs</div><pre><code>public class Human
+{
+    private string _name;
+    private int _age;
+    public Animal? Pet { get; set; }     // [0..1] -> nullable!
+
+    public Human(string name, int age)
+    {
+        _name = name;
+        _age = age;
+    }
+
+    public void Speak()
+    {
+        Console.WriteLine($"{_name} ({_age}) sagt Hallo.");
+    }
+
+    public void ListenTo(List&lt;Music&gt; playlist)   // [0..*] -> Liste
+    {
+        foreach (Music song in playlist)
+        {
+            song.Play();
+        }
+    }
+
+    public bool HasAnimal()
+    {
+        return Pet != null;
+    }
+}</code></pre></div>
+          <div class="codewrap"><div class="cap">Program.cs</div><pre><code>Artist artist = new Artist("Nina Chuba");
+Music song1 = new Music("Pop", artist, 120);
+Music song2 = new Music("Rock", new Artist("Gotthard"), 140);
+List&lt;Music&gt; playlist = new List&lt;Music&gt; { song1, song2 };
+
+Human leandro = new Human("Leandro", 18);
+leandro.Speak();
+Console.WriteLine(leandro.HasAnimal());    // False  -> Pet ist null
+
+leandro.Pet = new Animal("Hund");
+Console.WriteLine(leandro.HasAnimal());    // True
+leandro.Pet.MakeSound();
+
+leandro.ListenTo(playlist);
+song1.Tempo = 128;                         // Tempo ist public (+)</code></pre></div>
+          <div class="box merk">
+            <span class="tag">Multiplizität im Code</span>
+            <p><code>Pet: Animal[0..1]</code> → ein einzelnes, <strong>nullable</strong> Feld <code>Animal? Pet</code>.<br>
+            <code>playlist: Music[0..*]</code> → eine <strong>Liste</strong> <code>List&lt;Music&gt;</code>.<br>
+            <code>_artist: Artist</code> ohne Angabe → genau eins, also ein einfaches Feld.</p>
+          </div>
+        </details>
+      </div>
+
+      <div class="ex">
+        <h4><span class="num">V06</span>Employee / Manager – Vererbung mit <code>base</code></h4>
+        <details><summary>Lösung a–d</summary>
+          <div class="codewrap"><div class="cap">Employee.cs</div><pre><code>public class Employee
+{
+    public string FullName { get; set; }
+    public int EmployeeNumber { get; set; }
+    public double MonthlySalary { get; set; }
+
+    public Employee(string fullName, int employeeNumber, double monthlySalary)
+    {
+        FullName = fullName;
+        EmployeeNumber = employeeNumber;
+        MonthlySalary = monthlySalary;
+    }
+
+    public double GetYearlySalary()
+    {
+        return MonthlySalary * 12;
+    }
+}</code></pre></div>
+          <div class="codewrap"><div class="cap">Manager.cs</div><pre><code>public class Manager : Employee
+{
+    private double _bonus;        // privates Feld, wie verlangt
+
+    public Manager(string fullName, int employeeNumber, double monthlySalary, double bonus)
+        : base(fullName, employeeNumber, monthlySalary)   // Basiskonstruktor
+    {
+        _bonus = bonus;
+    }
+
+    // Aufgabe c): mit "new" verdecken
+    public new double GetYearlySalary()
+    {
+        // Die Multiplikation NICHT duplizieren - die Basis rechnet sie schon:
+        return base.GetYearlySalary() + _bonus;
+    }
+}</code></pre></div>
+          <div class="codewrap"><div class="cap">Program.cs</div><pre><code>Employee e = new Employee("Anna Muster", 1001, 6200);
+Manager m = new Manager("Beat Boss", 1002, 9500, 15000);
+
+Console.WriteLine($"{e.FullName} | Nr. {e.EmployeeNumber} | " +
+                  $"Monat: {e.MonthlySalary} | Jahr: {e.GetYearlySalary()}");
+Console.WriteLine($"{m.FullName} | Nr. {m.EmployeeNumber} | " +
+                  $"Monat: {m.MonthlySalary} | Jahr: {m.GetYearlySalary()}");
+
+// Anna Muster | Nr. 1001 | Monat: 6200 | Jahr: 74400
+// Beat Boss   | Nr. 1002 | Monat: 9500 | Jahr: 129000</code></pre></div>
+          <div class="box trap">
+            <span class="tag">Genau hier lauert die Prüfungsfrage</span>
+            <p>Die Aufgabe verlangt ausdrücklich <code>new</code>. Damit entscheidet der <strong>Referenztyp</strong>:</p>
+            <div class="codewrap"><pre><code>Employee chef = new Manager("Beat Boss", 1002, 9500, 15000);
+Console.WriteLine(chef.GetYearlySalary());   // 114000 - OHNE Bonus!</code></pre></div>
+            <p>Mit <code>virtual</code> in <code>Employee</code> und <code>override</code> in <code>Manager</code> käme hier korrekt 129000 heraus. Genau deshalb kommt in Teil e) die abstrakte Klasse.</p>
+          </div>
+        </details>
+        <details><summary>Lösung e) – mit abstrakter Klasse</summary>
+          <div class="codewrap"><div class="cap">Abstrakte Variante</div><pre><code>public abstract class Employee
+{
+    public string FullName { get; set; }
+    public int EmployeeNumber { get; set; }
+    public double MonthlySalary { get; set; }
+
+    protected Employee(string fullName, int employeeNumber, double monthlySalary)
+    {
+        FullName = fullName;
+        EmployeeNumber = employeeNumber;
+        MonthlySalary = monthlySalary;
+    }
+
+    public virtual double GetYearlySalary()      // Basisberechnung steht hier
+    {
+        return MonthlySalary * 12;
+    }
+}
+
+public class Developer : Employee                // braucht es jetzt, weil
+{                                                // Employee nicht mehr
+    public Developer(string fullName, int nr, double salary)   // instanziierbar ist
+        : base(fullName, nr, salary)
+    {
+    }
+}
+
+public class Manager : Employee
+{
+    private double _bonus;
+
+    public Manager(string fullName, int nr, double salary, double bonus)
+        : base(fullName, nr, salary)
+    {
+        _bonus = bonus;
+    }
+
+    public override double GetYearlySalary()     // echtes Überschreiben
+    {
+        return base.GetYearlySalary() + _bonus;
+    }
+}
+
+// Employee e = new Employee(...);   // FEHLER: abstrakt
+List&lt;Employee&gt; team = new List&lt;Employee&gt;
+{
+    new Developer("Anna Muster", 1001, 6200),
+    new Manager("Beat Boss", 1002, 9500, 15000)
+};
+
+foreach (Employee mitarbeiter in team)
+{
+    Console.WriteLine($"{mitarbeiter.FullName}: {mitarbeiter.GetYearlySalary()}");
+}
+// Anna Muster: 74400
+// Beat Boss: 129000   <- jetzt stimmt es auch über die Basisreferenz</code></pre></div>
+          <p><code>GetYearlySalary()</code> bleibt hier <code>virtual</code> und nicht <code>abstract</code>, weil die Basisberechnung (Monatslohn × 12) für alle gilt und nur der Manager sie erweitert.</p>
+        </details>
+      </div>
+
+      <div class="ex">
+        <h4><span class="num">V07</span>Person / Student / Professor – redundanzfrei</h4>
+        <p>Gegeben ist die <code>Main</code>-Methode und die Soll-Ausgabe. Gesucht: möglichst wenig doppelter Code.</p>
+        <div class="codewrap"><div class="cap">Soll-Ausgabe</div><pre><code>Giorgia (Student) sagt: "Ich lerne OOP."
+Kimo (Student) sagt: "Ich verstehe OOP."
+Meinrad (Professor) sagt: "Ich verstehe OOP."</code></pre></div>
+        <details><summary>Lösung</summary>
+          <p>Die Analyse der drei Zeilen: Das <strong>Satzmuster ist immer gleich</strong> (Name, Rolle in Klammern, Satzteil in Anführungszeichen) → <code>Speak()</code> gehört <strong>einmal</strong> in die Basisklasse. Variabel sind nur zwei Dinge: die Rolle und der gesprochene Satz. Der Satz ist ausserdem in zwei von drei Fällen identisch → er wird <code>virtual</code> mit dem häufigeren Wert als Standard.</p>
+          <div class="codewrap"><div class="cap">Person.cs</div><pre><code>public abstract class Person
+{
+    protected string Name;          // protected: auch in abgeleiteten Klassen nutzbar
+
+    protected Person(string name)
+    {
+        Name = name;
+    }
+
+    // Rolle: jede Unterklasse MUSS liefern -> abstract
+    protected abstract string Role { get; }
+
+    // Satz: Standard gilt für die meisten -> virtual, überschreibbar
+    protected virtual string Sentence
+    {
+        get { return "Ich verstehe OOP."; }
+    }
+
+    // Das Muster steht nur EINMAL im ganzen Programm:
+    public void Speak()
+    {
+        Console.WriteLine($"{Name} ({Role}) sagt: \"{Sentence}\"");
+    }
+}</code></pre></div>
+          <div class="codewrap"><div class="cap">Student.cs / Professor.cs</div><pre><code>public class Student : Person
+{
+    private bool _understandsOop;
+
+    public Student(string name, bool understandsOop)
+        : base(name)
+    {
+        _understandsOop = understandsOop;
+    }
+
+    protected override string Role
+    {
+        get { return "Student"; }
+    }
+
+    protected override string Sentence
+    {
+        get { return _understandsOop ? "Ich verstehe OOP." : "Ich lerne OOP."; }
+    }
+}
+
+public class Professor : Person
+{
+    public Professor(string name)
+        : base(name)
+    {
+    }
+
+    protected override string Role
+    {
+        get { return "Professor"; }
+    }
+
+    // Sentence wird NICHT überschrieben -> erbt "Ich verstehe OOP."
+}</code></pre></div>
+          <div class="codewrap"><div class="cap">Program.cs (unverändert aus der Aufgabe)</div><pre><code>// Person p = new Person();          // geht nicht, da abstrakt
+Person s01 = new Student("Giorgia", false);
+Person s02 = new Student("Kimo", true);
+Person p01 = new Professor("Meinrad");
+
+List&lt;Person&gt; people = new List&lt;Person&gt; { s01, s02, p01 };
+
+foreach (Person p in people)
+{
+    p.Speak();          // Polymorphie: jede Person antwortet auf ihre Art
+}</code></pre></div>
+          <div class="box merk">
+            <span class="tag">Warum das die «richtige» Lösung ist</span>
+            <p><strong>abstract class Person</strong> – eine Person an sich gibt es nicht, nur Studenten und Professoren. Die Aufgabe sagt es im Kommentar selbst.<br>
+            <strong>abstract Role</strong> – ohne Rolle wäre die Ausgabe unvollständig, also Pflicht.<br>
+            <strong>virtual Sentence</strong> – der Standardsatz gilt für Professor und den verstehenden Studenten; nur der lernende Student weicht ab.<br>
+            <strong>Speak() nur einmal</strong> – der Formatstring wird nicht dreimal kopiert. Genau das meint «redundanzfrei».<br>
+            <strong>List&lt;Person&gt;</strong> – Basisklassen-Referenzen auf abgeleitete Objekte: das Lehrbuchbeispiel für Polymorphie.</p>
+          </div>
+          <p>Statt <code>abstract string Role</code> könntest du auch <code>GetType().Name</code> verwenden – dann liefert die Klasse ihren eigenen Namen. Das ist kürzer, in der Prüfung aber schwerer zu begründen; bleib bei der expliziten Variante.</p>
+        </details>
+      </div>
+    </section>
+
+    <footer>
+      Quellen: M320 Prüfungsblatt (Lernziele &amp; Rahmenbedingungen), Block 01 Woche 1 &amp; Part 2, Block 01 UML, Block 02 Part 1–3, Handout «Die vier Säulen der OOP», Vertiefungsaufgaben 01–07 aus dem Modul-Repository, eigene Notizen zu Member/Attribute.
+    </footer>
+
+    </main>
+  </div>
+</div>
+
+<script>
+(function () {
+  /* ---- C# Syntax-Highlighting ---- */
+  var KEYWORDS = ["abstract","base","bool","break","case","catch","class","const","continue","default","do","double","else","false","finally","float","for","foreach","get","if","in","init","int","interface","internal","is","namespace","new","null","object","out","override","private","protected","public","readonly","ref","return","sealed","set","static","string","struct","switch","this","throw","true","try","using","value","var","virtual","void","while"];
+  var TYPES = ["Console","List","Math","String","Exception","NullReferenceException","GetType"];
+  var kwRe = "\\b(?:" + KEYWORDS.join("|") + ")\\b";
+  var tyRe = "\\b(?:" + TYPES.join("|") + ")\\b";
+  var re = new RegExp("(//[^\\n]*)|(\\$?\"(?:[^\"\\\\\\n]|\\\\.)*\")|(" + kwRe + ")|(" + tyRe + ")|(\\b\\d+(?:\\.\\d+)?\\b)", "g");
+
+  function esc(s) {
+    return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+
+  var seen = [];
+  document.querySelectorAll("pre").forEach(function (pre) {
+    if (seen.indexOf(pre) !== -1) return;
+    seen.push(pre);
+    var text = pre.textContent;
+    var out = esc(text).replace(re, function (m, com, str, kw, ty, num) {
+      if (com) return '<span class="tok-com">' + com + "</span>";
+      if (str) return '<span class="tok-str">' + str + "</span>";
+      if (kw) return '<span class="tok-kw">' + kw + "</span>";
+      if (ty) return '<span class="tok-kw">' + ty + "</span>";
+      if (num) return '<span class="tok-num">' + num + "</span>";
+      return m;
+    });
+    pre.innerHTML = "<code>" + out + "</code>";
+  });
+
+  /* ---- Lernziel-Fortschritt ---- */
+  var KEY = "m320-lz-v1";
+  var boxes = Array.prototype.slice.call(document.querySelectorAll(".lz input[type=checkbox]"));
+  var countEl = document.getElementById("pcount");
+  var barEl = document.getElementById("pbar");
+
+  function load() {
+    try {
+      var raw = window.localStorage.getItem(KEY);
+      if (!raw) return {};
+      return JSON.parse(raw) || {};
+    } catch (e) { return {}; }
+  }
+  function save(state) {
+    try { window.localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+  }
+  function render() {
+    var done = boxes.filter(function (b) { return b.checked; }).length;
+    countEl.textContent = done + " von " + boxes.length + " Lernzielen";
+    barEl.style.width = (boxes.length ? (done / boxes.length) * 100 : 0) + "%";
+  }
+
+  var state = load();
+  boxes.forEach(function (b) {
+    b.id = "lz-" + b.getAttribute("data-lz");
+    if (state[b.getAttribute("data-lz")]) b.checked = true;
+    b.addEventListener("change", function () {
+      state[b.getAttribute("data-lz")] = b.checked;
+      save(state);
+      render();
+    });
+  });
+  render();
+
+  /* ---- Scrollspy ---- */
+  var links = Array.prototype.slice.call(document.querySelectorAll(".toc a"));
+  var sections = links.map(function (a) { return document.querySelector(a.getAttribute("href")); });
+  if ("IntersectionObserver" in window) {
+    var obs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        links.forEach(function (a) { a.classList.remove("active"); });
+        var i = sections.indexOf(en.target);
+        if (i > -1) links[i].classList.add("active");
+      });
+    }, { rootMargin: "-10% 0px -75% 0px", threshold: 0 });
+    sections.forEach(function (s) { if (s) obs.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>
